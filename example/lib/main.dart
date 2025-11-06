@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_stepper/flutter_animation_stepper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'stepper_controller.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,68 +23,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ExamplePage extends StatefulWidget {
+class ExamplePage extends ConsumerWidget {
   const ExamplePage({super.key});
 
   @override
-  State<ExamplePage> createState() => _ExamplePageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stepperState = ref.watch(stepperControllerProvider);
+    final controller = ref.read(stepperControllerProvider.notifier);
 
-class _ExamplePageState extends State<ExamplePage> {
-  int _currentStep = 0;
-  bool _isLoading = false;
-
-  final List<StepItem> _steps = [
-    StepItem(
-      icon: const Icon(Icons.shopping_cart),
-      title: 'Cart',
-      subtitle: 'Add items',
-    ),
-    StepItem(
-      icon: const Icon(Icons.payment),
-      title: 'Payment',
-      subtitle: 'Choose method',
-    ),
-    StepItem(
-      icon: const Icon(Icons.local_shipping),
-      title: 'Delivery',
-      subtitle: 'Enter address',
-    ),
-    StepItem(
-      icon: const Icon(Icons.check_circle),
-      title: 'Complete',
-      subtitle: 'Order placed',
-    ),
-  ];
-
-  Future<void> _nextStep() async {
-    if (_currentStep < _steps.length - 1) {
-      // Show loading on current step
-      setState(() {
-        _isLoading = true;
-      });
-
-      // Simulate async operation (e.g., API call, validation)
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Move to next step and clear loading
-      setState(() {
-        _currentStep++;
-        _isLoading = false;
-      });
-    }
-  }
-
-  void _previousStep() {
-    if (_currentStep > 0) {
-      setState(() {
-        _currentStep--;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Stepper Example'),
@@ -100,14 +48,10 @@ class _ExamplePageState extends State<ExamplePage> {
             ),
             const SizedBox(height: 24),
             AnimationStepper(
-              steps: _steps,
-              currentStep: _currentStep,
-              isLoading: _isLoading,
-              onStepTapped: (index) {
-                setState(() {
-                  _currentStep = index;
-                });
-              },
+              steps: stepperState.steps,
+              currentStep: stepperState.currentStep,
+              isLoading: stepperState.isLoading,
+              onStepTapped: controller.goToStep,
             ),
             const SizedBox(height: 48),
             const Text(
@@ -116,9 +60,9 @@ class _ExamplePageState extends State<ExamplePage> {
             ),
             const SizedBox(height: 24),
             AnimationStepper(
-              steps: _steps,
-              currentStep: _currentStep,
-              isLoading: _isLoading,
+              steps: stepperState.steps,
+              currentStep: stepperState.currentStep,
+              isLoading: stepperState.isLoading,
               theme: AnimationStepperTheme(
                 activeColor: Colors.purple,
                 completedColor: Colors.green,
@@ -135,11 +79,7 @@ class _ExamplePageState extends State<ExamplePage> {
                   fontSize: 14,
                 ),
               ),
-              onStepTapped: (index) {
-                setState(() {
-                  _currentStep = index;
-                });
-              },
+              onStepTapped: controller.goToStep,
             ),
             const SizedBox(height: 48),
             const Text(
@@ -148,9 +88,9 @@ class _ExamplePageState extends State<ExamplePage> {
             ),
             const SizedBox(height: 24),
             AnimationStepper(
-              steps: _steps,
-              currentStep: _currentStep,
-              isLoading: _isLoading,
+              steps: stepperState.steps,
+              currentStep: stepperState.currentStep,
+              isLoading: stepperState.isLoading,
               theme: const AnimationStepperTheme(
                 connectedLine: true,
                 activeColor: Color(0xFFFF6B6B),
@@ -160,33 +100,32 @@ class _ExamplePageState extends State<ExamplePage> {
                 lineColor: Color(0xFFE0E0E0),
                 lineThickness: 4,
               ),
-              onStepTapped: (index) {
-                setState(() {
-                  _currentStep = index;
-                });
-              },
+              onStepTapped: controller.goToStep,
             ),
             const SizedBox(height: 48),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton.icon(
-                  onPressed: _currentStep > 0 && !_isLoading ? _previousStep : null,
+                  onPressed: stepperState.currentStep > 0 && !stepperState.isLoading
+                      ? controller.previousStep
+                      : null,
                   icon: const Icon(Icons.arrow_back),
                   label: const Text('Previous'),
                 ),
                 Text(
-                  'Step ${_currentStep + 1} of ${_steps.length}',
+                  'Step ${stepperState.currentStep + 1} of ${stepperState.steps.length}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: _currentStep < _steps.length - 1 && !_isLoading
-                      ? _nextStep
+                  onPressed: stepperState.currentStep < stepperState.steps.length - 1 &&
+                          !stepperState.isLoading
+                      ? controller.nextStep
                       : null,
-                  icon: _isLoading
+                  icon: stepperState.isLoading
                       ? const SizedBox(
                           width: 16,
                           height: 16,
