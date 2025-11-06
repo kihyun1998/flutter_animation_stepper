@@ -30,6 +30,7 @@ class ExamplePage extends StatefulWidget {
 
 class _ExamplePageState extends State<ExamplePage> {
   int _currentStep = 0;
+  int? _loadingStep;
 
   final List<StepItem> _steps = [
     StepItem(
@@ -54,10 +55,20 @@ class _ExamplePageState extends State<ExamplePage> {
     ),
   ];
 
-  void _nextStep() {
+  Future<void> _nextStep() async {
     if (_currentStep < _steps.length - 1) {
+      // Show loading on current step
+      setState(() {
+        _loadingStep = _currentStep;
+      });
+
+      // Simulate async operation (e.g., API call, validation)
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Move to next step and clear loading
       setState(() {
         _currentStep++;
+        _loadingStep = null;
       });
     }
   }
@@ -90,6 +101,7 @@ class _ExamplePageState extends State<ExamplePage> {
             AnimationStepper(
               steps: _steps,
               currentStep: _currentStep,
+              loadingStep: _loadingStep,
               onStepTapped: (index) {
                 setState(() {
                   _currentStep = index;
@@ -105,6 +117,7 @@ class _ExamplePageState extends State<ExamplePage> {
             AnimationStepper(
               steps: _steps,
               currentStep: _currentStep,
+              loadingStep: _loadingStep,
               theme: AnimationStepperTheme(
                 activeColor: Colors.purple,
                 completedColor: Colors.green,
@@ -132,7 +145,7 @@ class _ExamplePageState extends State<ExamplePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton.icon(
-                  onPressed: _currentStep > 0 ? _previousStep : null,
+                  onPressed: _currentStep > 0 && _loadingStep == null ? _previousStep : null,
                   icon: const Icon(Icons.arrow_back),
                   label: const Text('Previous'),
                 ),
@@ -144,8 +157,16 @@ class _ExamplePageState extends State<ExamplePage> {
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: _currentStep < _steps.length - 1 ? _nextStep : null,
-                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: _currentStep < _steps.length - 1 && _loadingStep == null
+                      ? _nextStep
+                      : null,
+                  icon: _loadingStep != null
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.arrow_forward),
                   label: const Text('Next'),
                 ),
               ],

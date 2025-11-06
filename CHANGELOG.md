@@ -7,3 +7,4 @@
 - **feat**: Support step tap navigation with `onStepTapped` callback
 - **feat**: Add animated line transitions between steps
 - **feat**: Support forward and backward step animations
+- **feat**: Add `loadingStep` parameter to show loading indicator on specific step

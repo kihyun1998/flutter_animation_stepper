@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/step_item.dart';
+
 import '../models/animation_stepper_theme.dart';
+import '../models/step_item.dart';
 
 /// A horizontal stepper widget with smooth animations between steps
 class AnimationStepper extends StatefulWidget {
@@ -9,6 +10,9 @@ class AnimationStepper extends StatefulWidget {
 
   /// Current active step index (0-based)
   final int currentStep;
+
+  /// Index of the step currently in loading state (shows CircularProgressIndicator)
+  final int? loadingStep;
 
   /// Callback when a step is tapped
   final ValueChanged<int>? onStepTapped;
@@ -20,14 +24,14 @@ class AnimationStepper extends StatefulWidget {
   final bool enableStepTapping;
 
   const AnimationStepper({
-    Key? key,
+    super.key,
     required this.steps,
     required this.currentStep,
+    this.loadingStep,
     this.onStepTapped,
     this.theme = const AnimationStepperTheme(),
     this.enableStepTapping = true,
-  })  : assert(currentStep >= 0),
-        super(key: key);
+  }) : assert(currentStep >= 0);
 
   @override
   State<AnimationStepper> createState() => _AnimationStepperState();
@@ -110,13 +114,15 @@ class _AnimationStepperState extends State<AnimationStepper>
     final step = widget.steps[index];
     final isActive = index == widget.currentStep;
     final isCompleted = index < widget.currentStep;
+    final isLoading = widget.loadingStep == index;
 
     Color stepColor;
     TextStyle? titleStyle;
 
     if (isCompleted) {
       stepColor = widget.theme.completedColor;
-      titleStyle = widget.theme.completedTitleStyle ??
+      titleStyle =
+          widget.theme.completedTitleStyle ??
           TextStyle(
             color: widget.theme.completedColor,
             fontWeight: FontWeight.w600,
@@ -124,7 +130,8 @@ class _AnimationStepperState extends State<AnimationStepper>
           );
     } else if (isActive) {
       stepColor = widget.theme.activeColor;
-      titleStyle = widget.theme.activeTitleStyle ??
+      titleStyle =
+          widget.theme.activeTitleStyle ??
           TextStyle(
             color: widget.theme.activeColor,
             fontWeight: FontWeight.bold,
@@ -132,56 +139,66 @@ class _AnimationStepperState extends State<AnimationStepper>
           );
     } else {
       stepColor = widget.theme.inactiveColor;
-      titleStyle = widget.theme.inactiveTitleStyle ??
-          TextStyle(
-            color: widget.theme.inactiveColor,
-            fontSize: 12,
-          );
+      titleStyle =
+          widget.theme.inactiveTitleStyle ??
+          TextStyle(color: widget.theme.inactiveColor, fontSize: 12);
     }
 
-    final subtitleStyle = widget.theme.subtitleStyle ??
-        TextStyle(
-          color: Colors.grey[600],
-          fontSize: 10,
-        );
+    final subtitleStyle =
+        widget.theme.subtitleStyle ??
+        TextStyle(color: Colors.grey[600], fontSize: 10);
 
     return GestureDetector(
-      onTap: widget.enableStepTapping
+      onTap: widget.enableStepTapping && !isLoading
           ? () => widget.onStepTapped?.call(index)
           : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AnimatedContainer(
-            duration: widget.theme.animationDuration,
-            curve: widget.theme.animationCurve,
-            width: widget.theme.stepSize,
-            height: widget.theme.stepSize,
-            decoration: BoxDecoration(
-              color: stepColor,
-              shape: BoxShape.circle,
-            ),
-            padding: EdgeInsets.all(widget.theme.stepIconPadding),
-            child: FittedBox(
-              child: IconTheme(
-                data: IconThemeData(
-                  color: Colors.white,
-                  size: widget.theme.stepSize - widget.theme.stepIconPadding * 2,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Outer loading indicator
+              if (isLoading)
+                SizedBox(
+                  width: widget.theme.stepSize + 8,
+                  height: widget.theme.stepSize + 8,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(stepColor),
+                  ),
                 ),
-                child: DefaultTextStyle(
-                  style: const TextStyle(color: Colors.white),
-                  child: step.icon,
+              // Step circle
+              AnimatedContainer(
+                duration: widget.theme.animationDuration,
+                curve: widget.theme.animationCurve,
+                width: widget.theme.stepSize,
+                height: widget.theme.stepSize,
+                decoration: BoxDecoration(
+                  color: stepColor,
+                  shape: BoxShape.circle,
+                ),
+                padding: EdgeInsets.all(widget.theme.stepIconPadding),
+                child: FittedBox(
+                  child: IconTheme(
+                    data: IconThemeData(
+                      color: Colors.white,
+                      size:
+                          widget.theme.stepSize -
+                          widget.theme.stepIconPadding * 2,
+                    ),
+                    child: DefaultTextStyle(
+                      style: const TextStyle(color: Colors.white),
+                      child: step.icon,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
           if (step.title != null) ...[
             SizedBox(height: widget.theme.stepTextSpacing),
-            Text(
-              step.title!,
-              style: titleStyle,
-              textAlign: TextAlign.center,
-            ),
+            Text(step.title!, style: titleStyle, textAlign: TextAlign.center),
           ],
           if (step.subtitle != null) ...[
             const SizedBox(height: 2),
@@ -199,7 +216,9 @@ class _AnimationStepperState extends State<AnimationStepper>
   Widget _buildConnectingLine(int index) {
     // The line is active if the next step is completed or currently active
     final isLineActive = index < widget.currentStep;
-    final isAnimating = (index == widget.currentStep - 1 && _previousStep < widget.currentStep) ||
+    final isAnimating =
+        (index == widget.currentStep - 1 &&
+            _previousStep < widget.currentStep) ||
         (index == widget.currentStep && _previousStep > widget.currentStep);
 
     return Padding(
@@ -214,10 +233,12 @@ class _AnimationStepperState extends State<AnimationStepper>
             double progress = 1.0;
 
             if (isAnimating) {
-              if (index == widget.currentStep - 1 && _previousStep < widget.currentStep) {
+              if (index == widget.currentStep - 1 &&
+                  _previousStep < widget.currentStep) {
                 // Moving forward: animate the line filling up
                 progress = _animation.value;
-              } else if (index == widget.currentStep && _previousStep > widget.currentStep) {
+              } else if (index == widget.currentStep &&
+                  _previousStep > widget.currentStep) {
                 // Moving backward: animate the line emptying
                 progress = 1.0 - _animation.value;
               }
