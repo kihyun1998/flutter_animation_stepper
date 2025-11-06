@@ -11,8 +11,8 @@ class AnimationStepper extends StatefulWidget {
   /// Current active step index (0-based)
   final int currentStep;
 
-  /// Index of the step currently in loading state (shows CircularProgressIndicator)
-  final int? loadingStep;
+  /// Whether the current step is in loading state (shows CircularProgressIndicator)
+  final bool isLoading;
 
   /// Callback when a step is tapped
   final ValueChanged<int>? onStepTapped;
@@ -27,7 +27,7 @@ class AnimationStepper extends StatefulWidget {
     super.key,
     required this.steps,
     required this.currentStep,
-    this.loadingStep,
+    this.isLoading = false,
     this.onStepTapped,
     this.theme = const AnimationStepperTheme(),
     this.enableStepTapping = true,
@@ -84,13 +84,47 @@ class _AnimationStepperState extends State<AnimationStepper>
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _buildSteps(),
-            ),
+            child: widget.theme.connectedLine
+                ? _buildConnectedLayout()
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _buildSteps(),
+                  ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildConnectedLayout() {
+    const lineWidth = 80.0; // Width between step centers
+    final totalWidth =
+        (widget.steps.length - 1) * lineWidth + widget.theme.stepSize;
+
+    return SizedBox(
+      width: totalWidth,
+      child: Stack(
+        children: [
+          // Background lines layer
+          Positioned(
+            top: widget.theme.stepSize / 2 - widget.theme.lineThickness / 2,
+            left: widget.theme.stepSize / 2,
+            right: widget.theme.stepSize / 2,
+            child: Row(
+              children: List.generate(
+                widget.steps.length - 1,
+                (i) => Expanded(child: _buildConnectingLine(i)),
+              ),
+            ),
+          ),
+          // Steps layer
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(widget.steps.length, (i) => _buildStep(i)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -114,7 +148,7 @@ class _AnimationStepperState extends State<AnimationStepper>
     final step = widget.steps[index];
     final isActive = index == widget.currentStep;
     final isCompleted = index < widget.currentStep;
-    final isLoading = widget.loadingStep == index;
+    final isLoadingThisStep = isActive && widget.isLoading;
 
     Color stepColor;
     TextStyle? titleStyle;
@@ -149,52 +183,61 @@ class _AnimationStepperState extends State<AnimationStepper>
         TextStyle(color: Colors.grey[600], fontSize: 10);
 
     return GestureDetector(
-      onTap: widget.enableStepTapping && !isLoading
+      onTap: widget.enableStepTapping && !isLoadingThisStep
           ? () => widget.onStepTapped?.call(index)
           : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              // Outer loading indicator
-              if (isLoading)
-                SizedBox(
-                  width: widget.theme.stepSize + 8,
-                  height: widget.theme.stepSize + 8,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(stepColor),
-                  ),
-                ),
-              // Step circle
-              AnimatedContainer(
-                duration: widget.theme.animationDuration,
-                curve: widget.theme.animationCurve,
-                width: widget.theme.stepSize,
-                height: widget.theme.stepSize,
-                decoration: BoxDecoration(
-                  color: stepColor,
-                  shape: BoxShape.circle,
-                ),
-                padding: EdgeInsets.all(widget.theme.stepIconPadding),
-                child: FittedBox(
-                  child: IconTheme(
-                    data: IconThemeData(
-                      color: Colors.white,
-                      size:
-                          widget.theme.stepSize -
-                          widget.theme.stepIconPadding * 2,
-                    ),
-                    child: DefaultTextStyle(
-                      style: const TextStyle(color: Colors.white),
-                      child: step.icon,
+          // Fixed size container to prevent height jumping when loading indicator appears
+          SizedBox(
+            width: widget.theme.stepSize + 8,
+            height: widget.theme.stepSize + 8,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Outer loading indicator with fade animation
+                AnimatedOpacity(
+                  opacity: isLoadingThisStep ? 1.0 : 0.0,
+                  duration: widget.theme.animationDuration,
+                  curve: widget.theme.animationCurve,
+                  child: SizedBox(
+                    width: widget.theme.stepSize + 8,
+                    height: widget.theme.stepSize + 8,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(stepColor),
                     ),
                   ),
                 ),
-              ),
-            ],
+                // Step circle
+                AnimatedContainer(
+                  duration: widget.theme.animationDuration,
+                  curve: widget.theme.animationCurve,
+                  width: widget.theme.stepSize,
+                  height: widget.theme.stepSize,
+                  decoration: BoxDecoration(
+                    color: stepColor,
+                    shape: BoxShape.circle,
+                  ),
+                  padding: EdgeInsets.all(widget.theme.stepIconPadding),
+                  child: FittedBox(
+                    child: IconTheme(
+                      data: IconThemeData(
+                        color: Colors.white,
+                        size:
+                            widget.theme.stepSize -
+                            widget.theme.stepIconPadding * 2,
+                      ),
+                      child: DefaultTextStyle(
+                        style: const TextStyle(color: Colors.white),
+                        child: step.icon,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           if (step.title != null) ...[
             SizedBox(height: widget.theme.stepTextSpacing),
@@ -221,50 +264,58 @@ class _AnimationStepperState extends State<AnimationStepper>
             _previousStep < widget.currentStep) ||
         (index == widget.currentStep && _previousStep > widget.currentStep);
 
+    final lineContent = AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        double progress = 1.0;
+
+        if (isAnimating) {
+          if (index == widget.currentStep - 1 &&
+              _previousStep < widget.currentStep) {
+            // Moving forward: animate the line filling up
+            progress = _animation.value;
+          } else if (index == widget.currentStep &&
+              _previousStep > widget.currentStep) {
+            // Moving backward: animate the line emptying
+            progress = 1.0 - _animation.value;
+          }
+        } else {
+          progress = isLineActive ? 1.0 : 0.0;
+        }
+
+        return Stack(
+          children: [
+            // Background line (inactive)
+            Container(
+              height: widget.theme.lineThickness,
+              color: widget.theme.lineColor,
+            ),
+            // Foreground line (active) - animated
+            FractionallySizedBox(
+              widthFactor: progress,
+              child: Container(
+                height: widget.theme.lineThickness,
+                color: widget.theme.activeLineColor,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    // For connected layout, the line is already positioned by parent Stack
+    if (widget.theme.connectedLine) {
+      return lineContent;
+    }
+
+    // For separated layout, add padding and fixed width
     return Padding(
       padding: EdgeInsets.only(
         top: widget.theme.stepSize / 2 - widget.theme.lineThickness / 2,
       ),
       child: SizedBox(
         width: 50, // Fixed width for connecting line
-        child: AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            double progress = 1.0;
-
-            if (isAnimating) {
-              if (index == widget.currentStep - 1 &&
-                  _previousStep < widget.currentStep) {
-                // Moving forward: animate the line filling up
-                progress = _animation.value;
-              } else if (index == widget.currentStep &&
-                  _previousStep > widget.currentStep) {
-                // Moving backward: animate the line emptying
-                progress = 1.0 - _animation.value;
-              }
-            } else {
-              progress = isLineActive ? 1.0 : 0.0;
-            }
-
-            return Stack(
-              children: [
-                // Background line (inactive)
-                Container(
-                  height: widget.theme.lineThickness,
-                  color: widget.theme.lineColor,
-                ),
-                // Foreground line (active) - animated
-                FractionallySizedBox(
-                  widthFactor: progress,
-                  child: Container(
-                    height: widget.theme.lineThickness,
-                    color: widget.theme.activeLineColor,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+        child: lineContent,
       ),
     );
   }

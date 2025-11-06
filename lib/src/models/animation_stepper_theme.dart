@@ -31,6 +31,12 @@ class AnimationStepperTheme {
   /// Padding inside the step circle
   final double stepIconPadding;
 
+  // Layout
+  /// Whether the connecting line is integrated with step circles (no gap)
+  /// When true, the line connects directly to the step circles
+  /// When false, there is a gap between the step and the line
+  final bool connectedLine;
+
   // Animation
   /// Duration of the step transition animation
   final Duration animationDuration;
@@ -61,6 +67,7 @@ class AnimationStepperTheme {
     this.lineThickness = 2.0,
     this.stepTextSpacing = 8.0,
     this.stepIconPadding = 8.0,
+    this.connectedLine = false,
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
     this.activeTitleStyle,
@@ -80,6 +87,7 @@ class AnimationStepperTheme {
     double? lineThickness,
     double? stepTextSpacing,
     double? stepIconPadding,
+    bool? connectedLine,
     Duration? animationDuration,
     Curve? animationCurve,
     TextStyle? activeTitleStyle,
@@ -97,6 +105,7 @@ class AnimationStepperTheme {
       lineThickness: lineThickness ?? this.lineThickness,
       stepTextSpacing: stepTextSpacing ?? this.stepTextSpacing,
       stepIconPadding: stepIconPadding ?? this.stepIconPadding,
+      connectedLine: connectedLine ?? this.connectedLine,
       animationDuration: animationDuration ?? this.animationDuration,
       animationCurve: animationCurve ?? this.animationCurve,
       activeTitleStyle: activeTitleStyle ?? this.activeTitleStyle,

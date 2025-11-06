@@ -30,7 +30,7 @@ class ExamplePage extends StatefulWidget {
 
 class _ExamplePageState extends State<ExamplePage> {
   int _currentStep = 0;
-  int? _loadingStep;
+  bool _isLoading = false;
 
   final List<StepItem> _steps = [
     StepItem(
@@ -59,7 +59,7 @@ class _ExamplePageState extends State<ExamplePage> {
     if (_currentStep < _steps.length - 1) {
       // Show loading on current step
       setState(() {
-        _loadingStep = _currentStep;
+        _isLoading = true;
       });
 
       // Simulate async operation (e.g., API call, validation)
@@ -68,7 +68,7 @@ class _ExamplePageState extends State<ExamplePage> {
       // Move to next step and clear loading
       setState(() {
         _currentStep++;
-        _loadingStep = null;
+        _isLoading = false;
       });
     }
   }
@@ -88,11 +88,12 @@ class _ExamplePageState extends State<ExamplePage> {
         title: const Text('Animation Stepper Example'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             const Text(
               'Default Theme',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -101,7 +102,7 @@ class _ExamplePageState extends State<ExamplePage> {
             AnimationStepper(
               steps: _steps,
               currentStep: _currentStep,
-              loadingStep: _loadingStep,
+              isLoading: _isLoading,
               onStepTapped: (index) {
                 setState(() {
                   _currentStep = index;
@@ -117,7 +118,7 @@ class _ExamplePageState extends State<ExamplePage> {
             AnimationStepper(
               steps: _steps,
               currentStep: _currentStep,
-              loadingStep: _loadingStep,
+              isLoading: _isLoading,
               theme: AnimationStepperTheme(
                 activeColor: Colors.purple,
                 completedColor: Colors.green,
@@ -140,12 +141,37 @@ class _ExamplePageState extends State<ExamplePage> {
                 });
               },
             ),
-            const Spacer(),
+            const SizedBox(height: 48),
+            const Text(
+              'Connected Line Style',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 24),
+            AnimationStepper(
+              steps: _steps,
+              currentStep: _currentStep,
+              isLoading: _isLoading,
+              theme: const AnimationStepperTheme(
+                connectedLine: true,
+                activeColor: Color(0xFFFF6B6B),
+                completedColor: Color(0xFF4ECDC4),
+                inactiveColor: Color(0xFFE0E0E0),
+                activeLineColor: Color(0xFFFF6B6B),
+                lineColor: Color(0xFFE0E0E0),
+                lineThickness: 4,
+              ),
+              onStepTapped: (index) {
+                setState(() {
+                  _currentStep = index;
+                });
+              },
+            ),
+            const SizedBox(height: 48),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton.icon(
-                  onPressed: _currentStep > 0 && _loadingStep == null ? _previousStep : null,
+                  onPressed: _currentStep > 0 && !_isLoading ? _previousStep : null,
                   icon: const Icon(Icons.arrow_back),
                   label: const Text('Previous'),
                 ),
@@ -157,10 +183,10 @@ class _ExamplePageState extends State<ExamplePage> {
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: _currentStep < _steps.length - 1 && _loadingStep == null
+                  onPressed: _currentStep < _steps.length - 1 && !_isLoading
                       ? _nextStep
                       : null,
-                  icon: _loadingStep != null
+                  icon: _isLoading
                       ? const SizedBox(
                           width: 16,
                           height: 16,
@@ -171,8 +197,10 @@ class _ExamplePageState extends State<ExamplePage> {
                 ),
               ],
             ),
+            const SizedBox(height: 24),
           ],
         ),
+      ),
       ),
     );
   }
