@@ -97,9 +97,8 @@ class _AnimationStepperState extends State<AnimationStepper>
   }
 
   Widget _buildConnectedLayout() {
-    const lineWidth = 80.0; // Width between step centers
     final totalWidth =
-        (widget.steps.length - 1) * lineWidth + widget.theme.stepSize;
+        (widget.steps.length - 1) * widget.theme.stepSpacing + widget.theme.stepSize;
 
     return SizedBox(
       width: totalWidth,
