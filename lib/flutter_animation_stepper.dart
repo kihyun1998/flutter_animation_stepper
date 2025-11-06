@@ -1,5 +1,5 @@
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+library flutter_animation_stepper;
+
+export 'src/models/step_item.dart';
+export 'src/models/animation_stepper_theme.dart';
+export 'src/widgets/animation_stepper.dart';
