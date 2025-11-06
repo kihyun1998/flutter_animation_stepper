@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_animation_stepper/flutter_animation_stepper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,32 +6,11 @@ part 'stepper_controller.g.dart';
 @riverpod
 class StepperController extends _$StepperController {
   @override
-  StepperState build() {
+  StepperState build(String exampleId, List<StepItem> steps) {
     return StepperState(
       currentStep: 0,
       isLoading: false,
-      steps: [
-        const StepItem(
-          icon: Icon(Icons.shopping_cart),
-          title: 'Cart',
-          subtitle: 'Add items',
-        ),
-        const StepItem(
-          icon: Icon(Icons.payment),
-          title: 'Payment',
-          subtitle: 'Choose method',
-        ),
-        const StepItem(
-          icon: Icon(Icons.local_shipping),
-          title: 'Delivery',
-          subtitle: 'Enter address',
-        ),
-        const StepItem(
-          icon: Icon(Icons.check_circle),
-          title: 'Complete',
-          subtitle: 'Order placed',
-        ),
-      ],
+      steps: steps,
     );
   }
 
