@@ -1,5 +1,5 @@
-library flutter_animation_stepper;
+library;
 
-export 'src/models/step_item.dart';
 export 'src/models/animation_stepper_theme.dart';
+export 'src/models/step_item.dart';
 export 'src/widgets/animation_stepper.dart';

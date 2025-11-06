@@ -204,7 +204,7 @@ class _AnimationStepperState extends State<AnimationStepper>
                     width: widget.theme.stepSize + 8,
                     height: widget.theme.stepSize + 8,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
+                      strokeWidth: widget.theme.loadingIndicatorStrokeWidth,
                       valueColor: AlwaysStoppedAnimation<Color>(stepColor),
                     ),
                   ),

@@ -34,6 +34,9 @@ class AnimationStepperTheme {
   /// Spacing between step circles (width between step centers)
   final double stepSpacing;
 
+  /// Stroke width of the loading indicator
+  final double loadingIndicatorStrokeWidth;
+
   // Layout
   /// Whether the connecting line is integrated with step circles (no gap)
   /// When true, the line connects directly to the step circles
@@ -71,6 +74,7 @@ class AnimationStepperTheme {
     this.stepTextSpacing = 8.0,
     this.stepIconPadding = 8.0,
     this.stepSpacing = 80.0,
+    this.loadingIndicatorStrokeWidth = 2.5,
     this.connectedLine = false,
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
@@ -92,6 +96,7 @@ class AnimationStepperTheme {
     double? stepTextSpacing,
     double? stepIconPadding,
     double? stepSpacing,
+    double? loadingIndicatorStrokeWidth,
     bool? connectedLine,
     Duration? animationDuration,
     Curve? animationCurve,
@@ -111,6 +116,7 @@ class AnimationStepperTheme {
       stepTextSpacing: stepTextSpacing ?? this.stepTextSpacing,
       stepIconPadding: stepIconPadding ?? this.stepIconPadding,
       stepSpacing: stepSpacing ?? this.stepSpacing,
+      loadingIndicatorStrokeWidth: loadingIndicatorStrokeWidth ?? this.loadingIndicatorStrokeWidth,
       connectedLine: connectedLine ?? this.connectedLine,
       animationDuration: animationDuration ?? this.animationDuration,
       animationCurve: animationCurve ?? this.animationCurve,
