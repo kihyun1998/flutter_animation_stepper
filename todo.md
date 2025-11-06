@@ -1,0 +1,1 @@
+버그있음. _buildSeparatedLayout 할 때 Stack으로 하는데 선들 자기 위치를 못찾는 이슈있으ㅜㅁ.
