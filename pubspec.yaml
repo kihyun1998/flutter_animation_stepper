@@ -1,11 +1,19 @@
 name: flutter_animation_stepper
-description: "A new Flutter package project."
-version: 0.0.1
-homepage:
+description: A Flutter package for creating beautiful horizontal steppers with smooth animations and customizable themes.
+version: 1.0.0
+homepage: https://github.com/kihyun1998/flutter_animation_stepper
+repository: https://github.com/kihyun1998/flutter_animation_stepper
+issue_tracker: https://github.com/kihyun1998/flutter_animation_stepper/issues
+
+topics:
+  - stepper
+  - horizontal-stepper
+  - step-indicator
+  - progress
 
 environment:
-  sdk: ^3.8.1
-  flutter: ">=1.17.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:

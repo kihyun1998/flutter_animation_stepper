@@ -1,10 +1,7 @@
-## [Unreleased]
+## 1.0.0
 
-### Added
-- **feat**: Add horizontal `AnimationStepper` widget with smooth animations
-- **feat**: Add `StepItem` model supporting any Widget type (Icon, SVG, Image, etc.)
-- **feat**: Add `AnimationStepperTheme` for full customization
-- **feat**: Support step tap navigation with `onStepTapped` callback
-- **feat**: Add animated line transitions between steps
-- **feat**: Support forward and backward step animations
-- **feat**: Add `loadingStep` parameter to show loading indicator on specific step
+### Initial Release
+- Horizontal animation stepper widget with smooth transitions
+- Fully customizable theme support
+- Step tap navigation with callback
+- Loading indicator on specific steps
