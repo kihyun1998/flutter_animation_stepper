@@ -41,22 +41,10 @@ final stepsWithTitleAndSubtitle = [
 
 // Steps with title only (no subtitle)
 final stepsWithTitleOnly = [
-  const StepItem(
-    icon: Icon(Icons.shopping_cart),
-    title: 'Cart',
-  ),
-  const StepItem(
-    icon: Icon(Icons.payment),
-    title: 'Payment',
-  ),
-  const StepItem(
-    icon: Icon(Icons.local_shipping),
-    title: 'Delivery',
-  ),
-  const StepItem(
-    icon: Icon(Icons.check_circle),
-    title: 'Complete',
-  ),
+  const StepItem(icon: Icon(Icons.shopping_cart), title: 'Cart'),
+  const StepItem(icon: Icon(Icons.payment), title: 'Payment'),
+  const StepItem(icon: Icon(Icons.local_shipping), title: 'Delivery'),
+  const StepItem(icon: Icon(Icons.check_circle), title: 'Complete'),
 ];
 
 // Steps with icon only (no title, no subtitle)
@@ -69,26 +57,11 @@ final stepsIconOnly = [
 
 // Steps with more items for wide spacing example
 final stepsForWideSpacing = [
-  const StepItem(
-    icon: Icon(Icons.account_circle),
-    title: 'Account',
-  ),
-  const StepItem(
-    icon: Icon(Icons.verified_user),
-    title: 'Verify',
-  ),
-  const StepItem(
-    icon: Icon(Icons.edit),
-    title: 'Profile',
-  ),
-  const StepItem(
-    icon: Icon(Icons.settings),
-    title: 'Settings',
-  ),
-  const StepItem(
-    icon: Icon(Icons.done),
-    title: 'Done',
-  ),
+  const StepItem(icon: Icon(Icons.account_circle), title: 'Account'),
+  const StepItem(icon: Icon(Icons.verified_user), title: 'Verify'),
+  const StepItem(icon: Icon(Icons.edit), title: 'Profile'),
+  const StepItem(icon: Icon(Icons.settings), title: 'Settings'),
+  const StepItem(icon: Icon(Icons.done), title: 'Done'),
 ];
 
 // All examples

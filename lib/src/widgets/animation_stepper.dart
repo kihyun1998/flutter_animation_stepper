@@ -248,8 +248,8 @@ class _AnimationStepperState extends State<AnimationStepper>
   /// In this mode, lines connect directly to step circles with no gap.
   /// Uses Stack-based positioning for precise line alignment.
   Widget _buildConnectedLayout() {
-    final totalWidth =
-        (widget.steps.length - 1) * widget.theme.stepSpacing + widget.theme.stepSize;
+    final totalWidth = (widget.steps.length - 1) * widget.theme.stepSpacing +
+        widget.theme.stepSize;
 
     return SizedBox(
       width: totalWidth,
@@ -257,9 +257,16 @@ class _AnimationStepperState extends State<AnimationStepper>
         children: [
           // Background lines layer
           Positioned(
-            top: (widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2) / 2 - widget.theme.lineThickness / 2,
-            left: (widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2) / 2,
-            right: (widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2) / 2,
+            top: (widget.theme.stepSize +
+                        widget.theme.loadingIndicatorStrokeWidth * 2) /
+                    2 -
+                widget.theme.lineThickness / 2,
+            left: (widget.theme.stepSize +
+                    widget.theme.loadingIndicatorStrokeWidth * 2) /
+                2,
+            right: (widget.theme.stepSize +
+                    widget.theme.loadingIndicatorStrokeWidth * 2) /
+                2,
             child: Row(
               children: List.generate(
                 widget.steps.length - 1,
@@ -308,7 +315,8 @@ class _AnimationStepperState extends State<AnimationStepper>
     for (int i = 0; i < widget.steps.length; i++) {
       // Add transparent spacer for step
       children.add(SizedBox(
-        width: widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2,
+        width: widget.theme.stepSize +
+            widget.theme.loadingIndicatorStrokeWidth * 2,
       ));
 
       // Add connecting line (except after last step)
@@ -333,7 +341,8 @@ class _AnimationStepperState extends State<AnimationStepper>
   /// Creates a row of steps with fixed widths to align with the line layer.
   List<Widget> _buildStepsForSeparatedLayout() {
     final List<Widget> children = [];
-    final stepWidth = widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2;
+    final stepWidth =
+        widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2;
 
     for (int i = 0; i < widget.steps.length; i++) {
       // Add step with fixed width to match lines layer
@@ -353,7 +362,6 @@ class _AnimationStepperState extends State<AnimationStepper>
     return children;
   }
 
-
   /// Builds a single step widget at the given [index].
   ///
   /// Determines the step's state (active, completed, or inactive) and
@@ -370,8 +378,7 @@ class _AnimationStepperState extends State<AnimationStepper>
 
     if (isCompleted) {
       stepColor = widget.theme.completedColor;
-      titleStyle =
-          widget.theme.completedTitleStyle ??
+      titleStyle = widget.theme.completedTitleStyle ??
           TextStyle(
             color: widget.theme.completedColor,
             fontWeight: FontWeight.w600,
@@ -379,8 +386,7 @@ class _AnimationStepperState extends State<AnimationStepper>
           );
     } else if (isActive) {
       stepColor = widget.theme.activeColor;
-      titleStyle =
-          widget.theme.activeTitleStyle ??
+      titleStyle = widget.theme.activeTitleStyle ??
           TextStyle(
             color: widget.theme.activeColor,
             fontWeight: FontWeight.bold,
@@ -388,13 +394,11 @@ class _AnimationStepperState extends State<AnimationStepper>
           );
     } else {
       stepColor = widget.theme.inactiveColor;
-      titleStyle =
-          widget.theme.inactiveTitleStyle ??
+      titleStyle = widget.theme.inactiveTitleStyle ??
           TextStyle(color: widget.theme.inactiveColor, fontSize: 12);
     }
 
-    final subtitleStyle =
-        widget.theme.subtitleStyle ??
+    final subtitleStyle = widget.theme.subtitleStyle ??
         TextStyle(color: Colors.grey[600], fontSize: 10);
 
     return GestureDetector(
@@ -406,8 +410,10 @@ class _AnimationStepperState extends State<AnimationStepper>
         children: [
           // Fixed size container to prevent height jumping when loading indicator appears
           SizedBox(
-            width: widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2,
-            height: widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2,
+            width: widget.theme.stepSize +
+                widget.theme.loadingIndicatorStrokeWidth * 2,
+            height: widget.theme.stepSize +
+                widget.theme.loadingIndicatorStrokeWidth * 2,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -417,8 +423,10 @@ class _AnimationStepperState extends State<AnimationStepper>
                   duration: widget.theme.animationDuration,
                   curve: widget.theme.animationCurve,
                   child: SizedBox(
-                    width: widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2,
-                    height: widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2,
+                    width: widget.theme.stepSize +
+                        widget.theme.loadingIndicatorStrokeWidth * 2,
+                    height: widget.theme.stepSize +
+                        widget.theme.loadingIndicatorStrokeWidth * 2,
                     child: CircularProgressIndicator(
                       strokeWidth: widget.theme.loadingIndicatorStrokeWidth,
                       valueColor: AlwaysStoppedAnimation<Color>(stepColor),
@@ -440,8 +448,7 @@ class _AnimationStepperState extends State<AnimationStepper>
                     child: IconTheme(
                       data: IconThemeData(
                         color: Colors.white,
-                        size:
-                            widget.theme.stepSize -
+                        size: widget.theme.stepSize -
                             widget.theme.stepIconPadding * 2,
                       ),
                       child: DefaultTextStyle(
@@ -480,8 +487,7 @@ class _AnimationStepperState extends State<AnimationStepper>
   Widget _buildConnectingLine(int index) {
     // The line is active if the next step is completed or currently active
     final isLineActive = index < widget.currentStep;
-    final isAnimating =
-        (index == widget.currentStep - 1 &&
+    final isAnimating = (index == widget.currentStep - 1 &&
             _previousStep < widget.currentStep) ||
         (index == widget.currentStep && _previousStep > widget.currentStep);
 
@@ -532,7 +538,10 @@ class _AnimationStepperState extends State<AnimationStepper>
     // For separated layout, add padding only (width is controlled by parent)
     return Padding(
       padding: EdgeInsets.only(
-        top: (widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2) / 2 - widget.theme.lineThickness / 2,
+        top: (widget.theme.stepSize +
+                    widget.theme.loadingIndicatorStrokeWidth * 2) /
+                2 -
+            widget.theme.lineThickness / 2,
       ),
       child: lineContent,
     );

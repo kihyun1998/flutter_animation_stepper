@@ -281,8 +281,10 @@ class AnimationStepperTheme {
       stepTextSpacing: stepTextSpacing ?? this.stepTextSpacing,
       stepIconPadding: stepIconPadding ?? this.stepIconPadding,
       stepSpacing: stepSpacing ?? this.stepSpacing,
-      loadingIndicatorStrokeWidth: loadingIndicatorStrokeWidth ?? this.loadingIndicatorStrokeWidth,
-      lineHorizontalPadding: lineHorizontalPadding ?? this.lineHorizontalPadding,
+      loadingIndicatorStrokeWidth:
+          loadingIndicatorStrokeWidth ?? this.loadingIndicatorStrokeWidth,
+      lineHorizontalPadding:
+          lineHorizontalPadding ?? this.lineHorizontalPadding,
       connectedLine: connectedLine ?? this.connectedLine,
       animationDuration: animationDuration ?? this.animationDuration,
       animationCurve: animationCurve ?? this.animationCurve,
