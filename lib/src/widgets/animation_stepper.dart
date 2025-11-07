@@ -152,7 +152,15 @@ class _AnimationStepperState extends State<AnimationStepper>
 
       // Add connecting line (except after last step)
       if (i < widget.steps.length - 1) {
-        children.add(_buildConnectingLine(i));
+        children.add(SizedBox(
+          width: widget.theme.stepSpacing,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.theme.lineHorizontalPadding,
+            ),
+            child: _buildConnectingLine(i),
+          ),
+        ));
       }
     }
 
@@ -161,14 +169,20 @@ class _AnimationStepperState extends State<AnimationStepper>
 
   List<Widget> _buildStepsForSeparatedLayout() {
     final List<Widget> children = [];
+    final stepWidth = widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2;
 
     for (int i = 0; i < widget.steps.length; i++) {
-      // Add step
-      children.add(_buildStep(i));
+      // Add step with fixed width to match lines layer
+      children.add(
+        SizedBox(
+          width: stepWidth,
+          child: _buildStep(i),
+        ),
+      );
 
       // Add spacer for line (except after last step)
       if (i < widget.steps.length - 1) {
-        children.add(const SizedBox(width: 50)); // Match line width
+        children.add(SizedBox(width: widget.theme.stepSpacing));
       }
     }
 
@@ -340,15 +354,12 @@ class _AnimationStepperState extends State<AnimationStepper>
       return lineContent;
     }
 
-    // For separated layout, add padding and fixed width
+    // For separated layout, add padding only (width is controlled by parent)
     return Padding(
       padding: EdgeInsets.only(
         top: (widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2) / 2 - widget.theme.lineThickness / 2,
       ),
-      child: SizedBox(
-        width: 50, // Fixed width for connecting line
-        child: lineContent,
-      ),
+      child: lineContent,
     );
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animation_stepper/flutter_animation_stepper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../example_data.dart';
-import '../stepper_controller.dart';
+import '../data/example_data.dart';
+import '../provider/stepper_controller.dart';
 
 class ExampleCard extends ConsumerWidget {
   final String exampleId;

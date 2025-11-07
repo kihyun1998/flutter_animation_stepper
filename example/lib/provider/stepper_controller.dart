@@ -1,3 +1,4 @@
+import 'package:example/model/stepper_state.dart';
 import 'package:flutter_animation_stepper/flutter_animation_stepper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,11 +8,7 @@ part 'stepper_controller.g.dart';
 class StepperController extends _$StepperController {
   @override
   StepperState build(String exampleId, List<StepItem> steps) {
-    return StepperState(
-      currentStep: 0,
-      isLoading: false,
-      steps: steps,
-    );
+    return StepperState(currentStep: 0, isLoading: false, steps: steps);
   }
 
   Future<void> nextStep() async {
@@ -40,29 +37,5 @@ class StepperController extends _$StepperController {
     if (index >= 0 && index < state.steps.length) {
       state = state.copyWith(currentStep: index);
     }
-  }
-}
-
-class StepperState {
-  final int currentStep;
-  final bool isLoading;
-  final List<StepItem> steps;
-
-  StepperState({
-    required this.currentStep,
-    required this.isLoading,
-    required this.steps,
-  });
-
-  StepperState copyWith({
-    int? currentStep,
-    bool? isLoading,
-    List<StepItem>? steps,
-  }) {
-    return StepperState(
-      currentStep: currentStep ?? this.currentStep,
-      isLoading: isLoading ?? this.isLoading,
-      steps: steps ?? this.steps,
-    );
   }
 }

@@ -192,4 +192,40 @@ final allExamples = [
       completedColor: Color(0xFFF06292),
     ),
   ),
+  ExampleData(
+    title: 'Line Horizontal Padding - None',
+    description: 'Separated mode with no padding (default)',
+    steps: stepsWithTitleOnly,
+    theme: const AnimationStepperTheme(
+      connectedLine: false,
+      lineHorizontalPadding: 0.0,
+      activeColor: Color(0xFF2196F3),
+      completedColor: Color(0xFF4CAF50),
+      lineThickness: 3,
+    ),
+  ),
+  ExampleData(
+    title: 'Line Horizontal Padding - Small',
+    description: 'Separated mode with 10px padding on each side',
+    steps: stepsWithTitleOnly,
+    theme: const AnimationStepperTheme(
+      connectedLine: false,
+      lineHorizontalPadding: 10.0,
+      activeColor: Color(0xFFFF9800),
+      completedColor: Color(0xFFFF5722),
+      lineThickness: 3,
+    ),
+  ),
+  ExampleData(
+    title: 'Line Horizontal Padding - Large',
+    description: 'Separated mode with 20px padding on each side',
+    steps: stepsWithTitleOnly,
+    theme: const AnimationStepperTheme(
+      connectedLine: false,
+      lineHorizontalPadding: 20.0,
+      activeColor: Color(0xFF9C27B0),
+      completedColor: Color(0xFFE91E63),
+      lineThickness: 3,
+    ),
+  ),
 ];
