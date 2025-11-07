@@ -3,26 +3,168 @@ import 'package:flutter/material.dart';
 import '../models/animation_stepper_theme.dart';
 import '../models/step_item.dart';
 
-/// A horizontal stepper widget with smooth animations between steps
+/// A horizontal stepper widget with smooth animations between steps.
+///
+/// [AnimationStepper] displays a horizontal sequence of steps with animated
+/// transitions. Each step can have an icon, title, subtitle, and associated data.
+/// The widget automatically animates color changes and line progress when
+/// moving between steps.
+///
+/// ## Features
+///
+/// - Smooth color transitions between step states (active, completed, inactive)
+/// - Animated progress lines between steps
+/// - Optional loading indicator for async operations
+/// - Customizable theme for colors, sizes, and animations
+/// - Support for step tapping to navigate
+/// - Two layout modes: connected and separated lines
+/// - Horizontal scrolling for overflow
+///
+/// ## Basic Usage
+///
+/// ```dart
+/// AnimationStepper(
+///   steps: [
+///     StepItem(
+///       icon: Icon(Icons.shopping_cart),
+///       title: 'Cart',
+///       subtitle: 'Review items',
+///     ),
+///     StepItem(
+///       icon: Icon(Icons.payment),
+///       title: 'Payment',
+///       subtitle: 'Enter details',
+///     ),
+///     StepItem(
+///       icon: Icon(Icons.check_circle),
+///       title: 'Confirm',
+///       subtitle: 'Complete order',
+///     ),
+///   ],
+///   currentStep: 1, // Payment step is active
+///   onStepTapped: (index) {
+///     setState(() => currentStep = index);
+///   },
+/// )
+/// ```
+///
+/// ## Loading State
+///
+/// Show a loading indicator on the current step during async operations:
+///
+/// ```dart
+/// AnimationStepper(
+///   steps: steps,
+///   currentStep: currentStep,
+///   isLoading: isProcessing, // Shows CircularProgressIndicator
+/// )
+/// ```
+///
+/// ## Custom Theme
+///
+/// Customize appearance using [AnimationStepperTheme]:
+///
+/// ```dart
+/// AnimationStepper(
+///   steps: steps,
+///   currentStep: 0,
+///   theme: AnimationStepperTheme(
+///     activeColor: Colors.purple,
+///     completedColor: Colors.green,
+///     stepSize: 50.0,
+///     stepSpacing: 100.0,
+///     connectedLine: true,
+///     animationDuration: Duration(milliseconds: 500),
+///   ),
+/// )
+/// ```
+///
+/// See also:
+/// * [StepItem], which defines individual step properties.
+/// * [AnimationStepperTheme], which customizes the stepper's appearance.
 class AnimationStepper extends StatefulWidget {
-  /// List of steps to display
+  /// The list of steps to display in the stepper.
+  ///
+  /// Must not be empty. Each [StepItem] represents a step in the process.
+  ///
+  /// Example:
+  /// ```dart
+  /// steps: [
+  ///   StepItem(icon: Icon(Icons.home), title: 'Home'),
+  ///   StepItem(icon: Icon(Icons.settings), title: 'Settings'),
+  /// ]
+  /// ```
   final List<StepItem> steps;
 
-  /// Current active step index (0-based)
+  /// The index of the currently active step (0-based).
+  ///
+  /// Must be greater than or equal to 0 and less than the length of [steps].
+  /// Steps before this index are marked as completed, and steps after are inactive.
+  ///
+  /// When this value changes, the stepper animates the transition.
   final int currentStep;
 
-  /// Whether the current step is in loading state (shows CircularProgressIndicator)
+  /// Whether the current step is in a loading state.
+  ///
+  /// When `true`, a [CircularProgressIndicator] appears around the active step,
+  /// and step tapping is disabled for the loading step.
+  ///
+  /// Defaults to `false`.
+  ///
+  /// Example:
+  /// ```dart
+  /// AnimationStepper(
+  ///   steps: steps,
+  ///   currentStep: 1,
+  ///   isLoading: true, // Shows loading indicator on step 1
+  /// )
+  /// ```
   final bool isLoading;
 
-  /// Callback when a step is tapped
+  /// Called when a step is tapped by the user.
+  ///
+  /// The callback receives the index of the tapped step. This is only triggered
+  /// if [enableStepTapping] is `true` and the step is not currently loading.
+  ///
+  /// If null, steps can still be tapped but no action is taken.
+  ///
+  /// Example:
+  /// ```dart
+  /// AnimationStepper(
+  ///   steps: steps,
+  ///   currentStep: currentStep,
+  ///   onStepTapped: (index) {
+  ///     if (index <= completedSteps) {
+  ///       setState(() => currentStep = index);
+  ///     }
+  ///   },
+  /// )
+  /// ```
   final ValueChanged<int>? onStepTapped;
 
-  /// Theme configuration for the stepper
+  /// The theme configuration for customizing the stepper's appearance.
+  ///
+  /// Controls colors, sizes, spacing, animations, and text styles.
+  ///
+  /// Defaults to [AnimationStepperTheme()] with Material Design default values.
+  ///
+  /// See [AnimationStepperTheme] for all available customization options.
   final AnimationStepperTheme theme;
 
-  /// Whether steps can be tapped to navigate
+  /// Whether steps can be tapped to trigger [onStepTapped].
+  ///
+  /// When `false`, steps are not interactive and tapping has no effect.
+  /// When `true`, tapping a step calls [onStepTapped] (if provided).
+  ///
+  /// Note: The loading step is never tappable, regardless of this setting.
+  ///
+  /// Defaults to `true`.
   final bool enableStepTapping;
 
+  /// Creates an [AnimationStepper].
+  ///
+  /// The [steps] and [currentStep] parameters are required.
+  /// The [currentStep] must be greater than or equal to 0.
   const AnimationStepper({
     super.key,
     required this.steps,
@@ -37,10 +179,18 @@ class AnimationStepper extends StatefulWidget {
   State<AnimationStepper> createState() => _AnimationStepperState();
 }
 
+/// Private state class for [AnimationStepper].
+///
+/// Manages animation controllers and tracks step transitions.
 class _AnimationStepperState extends State<AnimationStepper>
     with SingleTickerProviderStateMixin {
+  /// Animation controller for step transitions.
   late AnimationController _controller;
+
+  /// Curved animation for smooth step transitions.
   late Animation<double> _animation;
+
+  /// Previous step index used to determine animation direction.
   int _previousStep = 0;
 
   @override
@@ -93,6 +243,10 @@ class _AnimationStepperState extends State<AnimationStepper>
     );
   }
 
+  /// Builds the stepper with connected layout mode.
+  ///
+  /// In this mode, lines connect directly to step circles with no gap.
+  /// Uses Stack-based positioning for precise line alignment.
   Widget _buildConnectedLayout() {
     final totalWidth =
         (widget.steps.length - 1) * widget.theme.stepSpacing + widget.theme.stepSize;
@@ -124,6 +278,10 @@ class _AnimationStepperState extends State<AnimationStepper>
     );
   }
 
+  /// Builds the stepper with separated layout mode.
+  ///
+  /// In this mode, there is a visual gap between step circles and lines.
+  /// Uses two-layer Row layout with aligned spacing.
   Widget _buildSeparatedLayout() {
     return Stack(
       children: [
@@ -141,6 +299,9 @@ class _AnimationStepperState extends State<AnimationStepper>
     );
   }
 
+  /// Builds the line layer for separated layout mode.
+  ///
+  /// Creates a row of spacers and connecting lines positioned behind steps.
   List<Widget> _buildLinesForSeparatedLayout() {
     final List<Widget> children = [];
 
@@ -167,6 +328,9 @@ class _AnimationStepperState extends State<AnimationStepper>
     return children;
   }
 
+  /// Builds the step layer for separated layout mode.
+  ///
+  /// Creates a row of steps with fixed widths to align with the line layer.
   List<Widget> _buildStepsForSeparatedLayout() {
     final List<Widget> children = [];
     final stepWidth = widget.theme.stepSize + widget.theme.loadingIndicatorStrokeWidth * 2;
@@ -190,6 +354,11 @@ class _AnimationStepperState extends State<AnimationStepper>
   }
 
 
+  /// Builds a single step widget at the given [index].
+  ///
+  /// Determines the step's state (active, completed, or inactive) and
+  /// applies appropriate colors and styles. Includes the step circle,
+  /// icon, title, subtitle, and optional loading indicator.
   Widget _buildStep(int index) {
     final step = widget.steps[index];
     final isActive = index == widget.currentStep;
@@ -302,6 +471,12 @@ class _AnimationStepperState extends State<AnimationStepper>
     );
   }
 
+  /// Builds the connecting line between steps at the given [index].
+  ///
+  /// The line animates its fill progress when transitioning between steps.
+  /// Lines before the current step are filled, others show only the background.
+  ///
+  /// The [index] parameter represents the line after step [index].
   Widget _buildConnectingLine(int index) {
     // The line is active if the next step is completed or currently active
     final isLineActive = index < widget.currentStep;

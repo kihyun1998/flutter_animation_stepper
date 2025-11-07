@@ -1,72 +1,219 @@
 import 'package:flutter/material.dart';
 
-/// Theme configuration for the AnimationStepper widget
+/// Defines the visual properties for an [AnimationStepper] widget.
+///
+/// This theme class provides extensive customization options for the stepper's
+/// appearance, including colors, sizes, spacing, animations, and text styles.
+///
+/// Use this class to create a consistent look for your stepper or to match
+/// your app's design system.
+///
+/// Example:
+/// ```dart
+/// AnimationStepper(
+///   steps: steps,
+///   currentStep: 0,
+///   theme: AnimationStepperTheme(
+///     activeColor: Colors.blue,
+///     completedColor: Colors.green,
+///     stepSize: 50.0,
+///     lineThickness: 3.0,
+///     animationDuration: Duration(milliseconds: 500),
+///   ),
+/// )
+/// ```
+///
+/// You can also use [copyWith] to modify specific properties:
+/// ```dart
+/// final customTheme = AnimationStepperTheme().copyWith(
+///   activeColor: Colors.purple,
+///   stepSize: 60.0,
+/// );
+/// ```
+///
+/// See also:
+/// * [AnimationStepper], which uses this theme for styling.
 class AnimationStepperTheme {
   // Colors
-  /// Color for the active (current) step
+  /// The color used for the active (current) step circle and text.
+  ///
+  /// This color is applied to:
+  /// - The step circle background
+  /// - The loading indicator (if [AnimationStepper.isLoading] is true)
+  /// - The title text (unless [activeTitleStyle] overrides it)
+  ///
+  /// Defaults to `Color(0xFF2196F3)` (Material Blue).
   final Color activeColor;
 
-  /// Color for inactive (upcoming) steps
+  /// The color used for inactive (upcoming) steps.
+  ///
+  /// Applied to steps that haven't been reached yet (index > currentStep).
+  ///
+  /// Defaults to `Color(0xFFBDBDBD)` (Material Grey).
   final Color inactiveColor;
 
-  /// Color for completed steps
+  /// The color used for completed steps.
+  ///
+  /// Applied to all steps before the current step (index < currentStep).
+  ///
+  /// Defaults to `Color(0xFF4CAF50)` (Material Green).
   final Color completedColor;
 
-  /// Color for the line between steps when inactive
+  /// The color of the connecting line between steps in its inactive state.
+  ///
+  /// This is the background color of lines that haven't been reached yet.
+  ///
+  /// Defaults to `Color(0xFFE0E0E0)` (Light Grey).
   final Color lineColor;
 
-  /// Color for the line between steps when active/completed
+  /// The color of the connecting line when active or completed.
+  ///
+  /// This color fills the line with an animated progress as steps are completed.
+  ///
+  /// Defaults to `Color(0xFF2196F3)` (Material Blue).
   final Color activeLineColor;
 
   // Sizes
-  /// Size of the step circle/icon container
+  /// The diameter of the step circle container in logical pixels.
+  ///
+  /// This determines the size of the circular background that contains
+  /// the step icon. The actual icon size will be smaller due to [stepIconPadding].
+  ///
+  /// Defaults to `40.0`.
   final double stepSize;
 
-  /// Thickness of the connecting line between steps
+  /// The thickness of the connecting line between steps in logical pixels.
+  ///
+  /// This affects the height of the horizontal line that connects step circles.
+  ///
+  /// Defaults to `2.0`.
   final double lineThickness;
 
-  /// Spacing between step and text
+  /// The vertical spacing between the step circle and its title text.
+  ///
+  /// Only applies when steps have a title. Measured in logical pixels.
+  ///
+  /// Defaults to `8.0`.
   final double stepTextSpacing;
 
-  /// Padding inside the step circle
+  /// The padding inside the step circle around the icon.
+  ///
+  /// This creates space between the circle's edge and the icon widget.
+  /// Larger values result in smaller icons within the same [stepSize].
+  ///
+  /// Defaults to `8.0`.
   final double stepIconPadding;
 
-  /// Spacing between step circles (width between step centers)
+  /// The horizontal distance between step circle centers.
+  ///
+  /// This value determines the spacing of the stepper layout. In separated
+  /// layout mode ([connectedLine] = false), this is the width of the
+  /// line segment between steps. In connected mode, it affects overall width.
+  ///
+  /// Defaults to `80.0`.
   final double stepSpacing;
 
-  /// Stroke width of the loading indicator
+  /// The stroke width of the circular loading indicator.
+  ///
+  /// The loading indicator appears around the active step when
+  /// [AnimationStepper.isLoading] is true.
+  ///
+  /// Defaults to `2.5`.
   final double loadingIndicatorStrokeWidth;
 
-  /// Horizontal padding for lines in separated layout mode (connectedLine = false)
-  /// This adds spacing between the line and step circles
+  /// Horizontal padding applied to lines in separated layout mode.
+  ///
+  /// When [connectedLine] is false, this adds horizontal spacing between
+  /// the connecting line and the step circles, creating a visual gap.
+  ///
+  /// Defaults to `0.0`.
   final double lineHorizontalPadding;
 
   // Layout
-  /// Whether the connecting line is integrated with step circles (no gap)
-  /// When true, the line connects directly to the step circles
-  /// When false, there is a gap between the step and the line
+  /// Determines the layout mode for connecting lines.
+  ///
+  /// When `true`:
+  /// - Lines connect directly to step circles with no gap
+  /// - Creates a continuous, integrated visual appearance
+  /// - Uses Stack-based layout for precise positioning
+  ///
+  /// When `false`:
+  /// - Lines are separated from step circles
+  /// - Creates distinct visual separation between steps and connectors
+  /// - [lineHorizontalPadding] can be used to control the gap size
+  ///
+  /// Defaults to `false`.
   final bool connectedLine;
 
   // Animation
-  /// Duration of the step transition animation
+  /// The duration of step transition animations.
+  ///
+  /// This controls how long it takes for:
+  /// - Step colors to change when transitioning between states
+  /// - Connecting lines to fill/empty when moving between steps
+  /// - Loading indicator to fade in/out
+  ///
+  /// Defaults to `Duration(milliseconds: 300)`.
   final Duration animationDuration;
 
-  /// Curve for the step transition animation
+  /// The animation curve used for step transitions.
+  ///
+  /// This defines the rate of change during animations. Common curves include:
+  /// - [Curves.easeInOut]: Smooth acceleration and deceleration (default)
+  /// - [Curves.linear]: Constant speed
+  /// - [Curves.fastOutSlowIn]: Material Design standard
+  ///
+  /// Defaults to [Curves.easeInOut].
   final Curve animationCurve;
 
   // Text Styles
-  /// Text style for active step title
+  /// The text style for the active step's title.
+  ///
+  /// If null, a default style is used with [activeColor] and bold font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// AnimationStepperTheme(
+  ///   activeTitleStyle: TextStyle(
+  ///     fontSize: 14,
+  ///     fontWeight: FontWeight.bold,
+  ///     color: Colors.blue,
+  ///   ),
+  /// )
+  /// ```
   final TextStyle? activeTitleStyle;
 
-  /// Text style for inactive step title
+  /// The text style for inactive step titles.
+  ///
+  /// If null, a default style is used with [inactiveColor].
   final TextStyle? inactiveTitleStyle;
 
-  /// Text style for completed step title
+  /// The text style for completed step titles.
+  ///
+  /// If null, a default style is used with [completedColor] and semi-bold font weight.
   final TextStyle? completedTitleStyle;
 
-  /// Text style for subtitle
+  /// The text style for step subtitles.
+  ///
+  /// Applied to all subtitle text regardless of step state.
+  /// If null, a default style is used with grey color and smaller font size.
   final TextStyle? subtitleStyle;
 
+  /// Creates an [AnimationStepperTheme] with customizable properties.
+  ///
+  /// All parameters are optional and have sensible defaults that follow
+  /// Material Design guidelines.
+  ///
+  /// Example:
+  /// ```dart
+  /// const theme = AnimationStepperTheme(
+  ///   activeColor: Colors.purple,
+  ///   completedColor: Colors.deepPurple,
+  ///   stepSize: 50.0,
+  ///   animationDuration: Duration(milliseconds: 500),
+  ///   connectedLine: true,
+  /// );
+  /// ```
   const AnimationStepperTheme({
     this.activeColor = const Color(0xFF2196F3),
     this.inactiveColor = const Color(0xFFBDBDBD),
@@ -89,7 +236,19 @@ class AnimationStepperTheme {
     this.subtitleStyle,
   });
 
-  /// Creates a copy of this theme with the given fields replaced with new values
+  /// Creates a copy of this theme with the given fields replaced with new values.
+  ///
+  /// This is useful for creating theme variations without repeating all properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// final baseTheme = AnimationStepperTheme();
+  /// final darkTheme = baseTheme.copyWith(
+  ///   activeColor: Colors.deepPurple,
+  ///   inactiveColor: Colors.grey[700],
+  ///   lineColor: Colors.grey[800],
+  /// );
+  /// ```
   AnimationStepperTheme copyWith({
     Color? activeColor,
     Color? inactiveColor,
