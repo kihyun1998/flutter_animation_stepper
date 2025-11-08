@@ -15,6 +15,24 @@ class ExampleData {
   });
 }
 
+class MovingDotExampleData {
+  final String title;
+  final int stepCount;
+  final List<String>? stepLabels;
+  final Widget? completedIcon;
+  final MovingDotStepperTheme? theme;
+  final String? description;
+
+  const MovingDotExampleData({
+    required this.title,
+    required this.stepCount,
+    this.stepLabels,
+    this.completedIcon,
+    this.theme,
+    this.description,
+  });
+}
+
 // Steps with title and subtitle
 final stepsWithTitleAndSubtitle = [
   const StepItem(
@@ -199,6 +217,152 @@ final allExamples = [
       activeColor: Color(0xFF9C27B0),
       completedColor: Color(0xFFE91E63),
       lineThickness: 3,
+    ),
+  ),
+];
+
+// MovingDotStepper examples
+final allMovingDotExamples = [
+  const MovingDotExampleData(
+    title: 'Default Style',
+    description: 'Basic moving dot stepper with labels',
+    stepCount: 4,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+  ),
+  const MovingDotExampleData(
+    title: 'Custom Colors',
+    description: 'Custom colors for active and completed states',
+    stepCount: 4,
+    stepLabels: ['Cart', 'Payment', 'Delivery', 'Done'],
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFF6366F1),
+      completedColor: Color(0xFF10B981),
+      inactiveColor: Color(0xFFD1D5DB),
+      activeLineColor: Color(0xFF6366F1),
+      lineColor: Color(0xFFE5E7EB),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Large Dots',
+    description: 'Bigger dots with custom spacing',
+    stepCount: 5,
+    stepLabels: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
+    theme: MovingDotStepperTheme(
+      dotSize: 32.0,
+      iconSize: 20.0,
+      stepSpacing: 100.0,
+      activeColor: Color(0xFFEC4899),
+      completedColor: Color(0xFF8B5CF6),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Custom Icon',
+    description: 'Star icon for completed steps',
+    stepCount: 4,
+    stepLabels: ['Begin', 'Work', 'Test', 'Finish'],
+    completedIcon: Icon(Icons.star, color: Colors.white, size: 16),
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFFF59E0B),
+      completedColor: Color(0xFFF59E0B),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'No Labels',
+    description: 'Simple stepper without text labels',
+    stepCount: 5,
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFF14B8A6),
+      completedColor: Color(0xFF0D9488),
+      dotSize: 20.0,
+      stepSpacing: 60.0,
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Fast Animation',
+    description: 'Quick transitions between steps',
+    stepCount: 4,
+    stepLabels: ['One', 'Two', 'Three', 'Four'],
+    theme: MovingDotStepperTheme(
+      animationDuration: Duration(milliseconds: 200),
+      animationCurve: Curves.easeOut,
+      activeColor: Color(0xFFEF4444),
+      completedColor: Color(0xFF22C55E),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Slow Animation',
+    description: 'Smooth and slower transitions',
+    stepCount: 3,
+    stepLabels: ['Alpha', 'Beta', 'Gamma'],
+    theme: MovingDotStepperTheme(
+      animationDuration: Duration(milliseconds: 800),
+      animationCurve: Curves.easeInOutCubic,
+      activeColor: Color(0xFF8B5CF6),
+      completedColor: Color(0xFF06B6D4),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Thick Lines',
+    description: 'Bold connecting lines between steps',
+    stepCount: 4,
+    stepLabels: ['First', 'Second', 'Third', 'Fourth'],
+    theme: MovingDotStepperTheme(
+      lineThickness: 4.0,
+      activeColor: Color(0xFF3B82F6),
+      completedColor: Color(0xFF10B981),
+      activeLineColor: Color(0xFF3B82F6),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Zero Gap',
+    description: 'Lines directly connected to dots (no gap)',
+    stepCount: 4,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    theme: MovingDotStepperTheme(
+      linePadding: 0.0,
+      activeColor: Color(0xFF6366F1),
+      completedColor: Color(0xFF10B981),
+      activeLineColor: Color(0xFF6366F1),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Default Gap',
+    description: 'Independent line segments between dots',
+    stepCount: 4,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    theme: MovingDotStepperTheme(
+      linePadding: 8.0,
+      activeColor: Color(0xFF6366F1),
+      completedColor: Color(0xFF10B981),
+      activeLineColor: Color(0xFF6366F1),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Small Gap',
+    description: 'Minimal padding between dots and lines',
+    stepCount: 5,
+    stepLabels: ['A', 'B', 'C', 'D', 'E'],
+    theme: MovingDotStepperTheme(
+      linePadding: 4.0,
+      stepSpacing: 60.0,
+      activeColor: Color(0xFFEC4899),
+      completedColor: Color(0xFF8B5CF6),
+      lineThickness: 3.0,
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Large Gap',
+    description: 'More spacing between dots and lines',
+    stepCount: 3,
+    stepLabels: ['Begin', 'Middle', 'End'],
+    theme: MovingDotStepperTheme(
+      linePadding: 16.0,
+      stepSpacing: 120.0,
+      dotSize: 28.0,
+      iconSize: 18.0,
+      activeColor: Color(0xFFF59E0B),
+      completedColor: Color(0xFF10B981),
+      activeLineColor: Color(0xFFF59E0B),
     ),
   ),
 ];
