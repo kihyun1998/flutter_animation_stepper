@@ -390,18 +390,14 @@ final allMovingDotExamples = [
       dotSize: 28.0,
     ),
   ),
-  MovingDotExampleData(
+  const MovingDotExampleData(
     title: 'With Shadow',
     description: 'All dots have elevation shadow',
     stepCount: 4,
     stepLabels: ['Alpha', 'Beta', 'Gamma', 'Delta'],
     theme: MovingDotStepperTheme(
       dotShadow: [
-        BoxShadow(
-          color: Colors.black26,
-          blurRadius: 4,
-          offset: Offset(0, 2),
-        ),
+        BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
       ],
       activeColor: Color(0xFF3B82F6),
       completedColor: Color(0xFF10B981),
@@ -414,18 +410,18 @@ final allMovingDotExamples = [
     stepCount: 5,
     stepLabels: ['1', '2', '3', '4', '5'],
     theme: MovingDotStepperTheme(
-      inactiveFillColor: Color(0xFFF3F4F6),
+      inactiveFillColor: const Color(0xFFF3F4F6),
       inactiveBorderWidth: 3.0,
-      inactiveColor: Color(0xFF9CA3AF),
+      inactiveColor: const Color(0xFF9CA3AF),
       dotShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.15),
+          color: Colors.black.withValues(alpha: 0.15),
           blurRadius: 6,
-          offset: Offset(0, 3),
+          offset: const Offset(0, 3),
         ),
       ],
-      activeColor: Color(0xFFEF4444),
-      completedColor: Color(0xFF22C55E),
+      activeColor: const Color(0xFFEF4444),
+      completedColor: const Color(0xFF22C55E),
       dotSize: 32.0,
       iconSize: 20.0,
       stepSpacing: 90.0,

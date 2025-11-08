@@ -76,8 +76,8 @@ class MovingDotExampleCard extends ConsumerWidget {
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: stepperState.currentStep <
-                          stepperState.stepCount - 1
+                  onPressed:
+                      stepperState.currentStep < stepperState.stepCount - 1
                       ? controller.nextStep
                       : null,
                   icon: const Icon(Icons.arrow_forward, size: 18),

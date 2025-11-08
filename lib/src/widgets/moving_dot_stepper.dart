@@ -189,7 +189,9 @@ class _MovingDotStepperState extends State<MovingDotStepper>
         children.add(SizedBox(width: widget.theme.linePadding));
         children.add(
           SizedBox(
-            width: widget.theme.stepSpacing - widget.theme.dotSize - widget.theme.linePadding * 2,
+            width: widget.theme.stepSpacing -
+                widget.theme.dotSize -
+                widget.theme.linePadding * 2,
             child: Padding(
               padding: EdgeInsets.only(
                 top: widget.theme.dotSize / 2 - widget.theme.lineThickness / 2,
@@ -240,22 +242,23 @@ class _MovingDotStepperState extends State<MovingDotStepper>
   }
 
   /// Builds the dot indicator for a step based on its state.
-  Widget _buildDot(int index, bool isActive, bool isCompleted, bool isInactive) {
+  Widget _buildDot(
+      int index, bool isActive, bool isCompleted, bool isInactive) {
     // Forward animations (currentStep increased)
     final isAnimatingToCompleted = index == _previousStep &&
         widget.currentStep > _previousStep &&
         index < widget.currentStep;
 
-    final isAnimatingToActive = index == widget.currentStep &&
-        widget.currentStep > _previousStep;
+    final isAnimatingToActive =
+        index == widget.currentStep && widget.currentStep > _previousStep;
 
     // Backward animations (currentStep decreased)
     final isAnimatingFromActive = index == _previousStep &&
         widget.currentStep < _previousStep &&
         index > widget.currentStep;
 
-    final isAnimatingFromCompleted = index == widget.currentStep &&
-        widget.currentStep < _previousStep;
+    final isAnimatingFromCompleted =
+        index == widget.currentStep && widget.currentStep < _previousStep;
 
     // Forward: Active → Completed
     if (isAnimatingToCompleted) {

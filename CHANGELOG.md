@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Added MovingDotStepper widget with independent line segments and extensive customization options (background fill, border width, shadow, outlined active state)
+
 ## 1.0.0
 
 ### Initial Release

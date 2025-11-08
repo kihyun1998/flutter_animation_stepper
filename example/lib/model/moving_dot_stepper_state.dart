@@ -7,10 +7,7 @@ class MovingDotStepperState {
     required this.stepCount,
   });
 
-  MovingDotStepperState copyWith({
-    int? currentStep,
-    int? stepCount,
-  }) {
+  MovingDotStepperState copyWith({int? currentStep, int? stepCount}) {
     return MovingDotStepperState(
       currentStep: currentStep ?? this.currentStep,
       stepCount: stepCount ?? this.stepCount,
