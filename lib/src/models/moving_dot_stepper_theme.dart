@@ -22,17 +22,47 @@ class MovingDotStepperTheme {
   // Colors
   /// The color used for the active (current) step dot.
   ///
-  /// This color is applied to the filled circle of the step currently in progress.
+  /// This is used as the default fill color when [activeFillColor] is not specified.
   ///
   /// Defaults to `Color(0xFF2196F3)` (Material Blue).
   final Color activeColor;
 
-  /// The color used for inactive (upcoming) steps.
+  /// The fill color inside the active (current) step dot.
+  ///
+  /// When set to a non-transparent color, creates a filled circle.
+  /// Set to `Colors.transparent` for an empty circle with border only.
+  ///
+  /// If null, uses [activeColor] as the fill color.
+  final Color? activeFillColor;
+
+  /// The border color of the active (current) step dot.
+  ///
+  /// When specified, adds a border around the active step circle.
+  /// Useful for creating outlined active states.
+  ///
+  /// If null, no border is applied (filled circle only).
+  final Color? activeBorderColor;
+
+  /// The border width of the active step dot.
+  ///
+  /// Only applies when [activeBorderColor] is specified.
+  ///
+  /// Defaults to `2.0`.
+  final double activeBorderWidth;
+
+  /// The color used for inactive (upcoming) steps border.
   ///
   /// Applied to the border of steps that haven't been reached yet.
   ///
   /// Defaults to `Color(0xFFBDBDBD)` (Material Grey).
   final Color inactiveColor;
+
+  /// The fill color inside inactive (upcoming) step dots.
+  ///
+  /// When set to a non-transparent color, the empty circle will have a background.
+  ///
+  /// Defaults to `Colors.transparent`.
+  final Color inactiveFillColor;
 
   /// The color used for completed steps.
   ///
@@ -99,6 +129,31 @@ class MovingDotStepperTheme {
   /// Defaults to `8.0`.
   final double linePadding;
 
+  /// The border width of inactive step dots.
+  ///
+  /// Controls the thickness of the circle outline for steps that haven't been reached.
+  ///
+  /// Defaults to `2.0`.
+  final double inactiveBorderWidth;
+
+  /// Shadow applied to all step dots.
+  ///
+  /// When provided, adds depth and elevation to the step indicators.
+  ///
+  /// Example:
+  /// ```dart
+  /// dotShadow: [
+  ///   BoxShadow(
+  ///     color: Colors.black26,
+  ///     blurRadius: 4,
+  ///     offset: Offset(0, 2),
+  ///   ),
+  /// ]
+  /// ```
+  ///
+  /// Defaults to `null` (no shadow).
+  final List<BoxShadow>? dotShadow;
+
   // Animation
   /// The duration of step transition animations.
   ///
@@ -139,7 +194,11 @@ class MovingDotStepperTheme {
   /// Material Design guidelines.
   const MovingDotStepperTheme({
     this.activeColor = const Color(0xFF2196F3),
+    this.activeFillColor,
+    this.activeBorderColor,
+    this.activeBorderWidth = 2.0,
     this.inactiveColor = const Color(0xFFBDBDBD),
+    this.inactiveFillColor = Colors.transparent,
     this.completedColor = const Color(0xFF4CAF50),
     this.lineColor = const Color(0xFFE0E0E0),
     this.activeLineColor = const Color(0xFF2196F3),
@@ -149,6 +208,8 @@ class MovingDotStepperTheme {
     this.iconSize = 16.0,
     this.labelSpacing = 8.0,
     this.linePadding = 8.0,
+    this.inactiveBorderWidth = 2.0,
+    this.dotShadow,
     this.animationDuration = const Duration(milliseconds: 400),
     this.animationCurve = Curves.easeInOut,
     this.activeLabelStyle,
@@ -159,7 +220,11 @@ class MovingDotStepperTheme {
   /// Creates a copy of this theme with the given fields replaced with new values.
   MovingDotStepperTheme copyWith({
     Color? activeColor,
+    Color? activeFillColor,
+    Color? activeBorderColor,
+    double? activeBorderWidth,
     Color? inactiveColor,
+    Color? inactiveFillColor,
     Color? completedColor,
     Color? lineColor,
     Color? activeLineColor,
@@ -169,6 +234,8 @@ class MovingDotStepperTheme {
     double? iconSize,
     double? labelSpacing,
     double? linePadding,
+    double? inactiveBorderWidth,
+    List<BoxShadow>? dotShadow,
     Duration? animationDuration,
     Curve? animationCurve,
     TextStyle? activeLabelStyle,
@@ -177,7 +244,11 @@ class MovingDotStepperTheme {
   }) {
     return MovingDotStepperTheme(
       activeColor: activeColor ?? this.activeColor,
+      activeFillColor: activeFillColor ?? this.activeFillColor,
+      activeBorderColor: activeBorderColor ?? this.activeBorderColor,
+      activeBorderWidth: activeBorderWidth ?? this.activeBorderWidth,
       inactiveColor: inactiveColor ?? this.inactiveColor,
+      inactiveFillColor: inactiveFillColor ?? this.inactiveFillColor,
       completedColor: completedColor ?? this.completedColor,
       lineColor: lineColor ?? this.lineColor,
       activeLineColor: activeLineColor ?? this.activeLineColor,
@@ -187,6 +258,8 @@ class MovingDotStepperTheme {
       iconSize: iconSize ?? this.iconSize,
       labelSpacing: labelSpacing ?? this.labelSpacing,
       linePadding: linePadding ?? this.linePadding,
+      inactiveBorderWidth: inactiveBorderWidth ?? this.inactiveBorderWidth,
+      dotShadow: dotShadow ?? this.dotShadow,
       animationDuration: animationDuration ?? this.animationDuration,
       animationCurve: animationCurve ?? this.animationCurve,
       activeLabelStyle: activeLabelStyle ?? this.activeLabelStyle,

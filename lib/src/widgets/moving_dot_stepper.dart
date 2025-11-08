@@ -241,7 +241,7 @@ class _MovingDotStepperState extends State<MovingDotStepper>
 
   /// Builds the dot indicator for a step based on its state.
   Widget _buildDot(int index, bool isActive, bool isCompleted, bool isInactive) {
-    // Determine if this step is currently animating
+    // Forward animations (currentStep increased)
     final isAnimatingToCompleted = index == _previousStep &&
         widget.currentStep > _previousStep &&
         index < widget.currentStep;
@@ -249,31 +249,16 @@ class _MovingDotStepperState extends State<MovingDotStepper>
     final isAnimatingToActive = index == widget.currentStep &&
         widget.currentStep > _previousStep;
 
-    if (isCompleted && !isAnimatingToCompleted) {
-      // Static completed state
-      return _buildCompletedDot();
-    } else if (isActive && !isAnimatingToActive) {
-      // Static active state
-      return _buildActiveDot();
-    } else if (isInactive) {
-      // Inactive state (may be animating from active)
-      final isAnimatingFromActive = index == _previousStep &&
-          widget.currentStep < _previousStep;
+    // Backward animations (currentStep decreased)
+    final isAnimatingFromActive = index == _previousStep &&
+        widget.currentStep < _previousStep &&
+        index > widget.currentStep;
 
-      if (isAnimatingFromActive) {
-        return AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return Opacity(
-              opacity: 1.0 - _animation.value,
-              child: _buildActiveDot(),
-            );
-          },
-        );
-      }
-      return _buildInactiveDot();
-    } else if (isAnimatingToCompleted) {
-      // Animating from active to completed
+    final isAnimatingFromCompleted = index == widget.currentStep &&
+        widget.currentStep < _previousStep;
+
+    // Forward: Active → Completed
+    if (isAnimatingToCompleted) {
       return AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
@@ -292,8 +277,10 @@ class _MovingDotStepperState extends State<MovingDotStepper>
           );
         },
       );
-    } else if (isAnimatingToActive) {
-      // Animating from inactive to active
+    }
+
+    // Forward: Inactive → Active
+    if (isAnimatingToActive) {
       return AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
@@ -314,7 +301,58 @@ class _MovingDotStepperState extends State<MovingDotStepper>
       );
     }
 
-    return _buildInactiveDot();
+    // Backward: Active → Inactive
+    if (isAnimatingFromActive) {
+      return AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              Opacity(
+                opacity: 1.0 - _animation.value,
+                child: _buildActiveDot(),
+              ),
+              Opacity(
+                opacity: _animation.value,
+                child: _buildInactiveDot(),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    // Backward: Completed → Active
+    if (isAnimatingFromCompleted) {
+      return AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              Opacity(
+                opacity: 1.0 - _animation.value,
+                child: _buildCompletedDot(),
+              ),
+              Opacity(
+                opacity: _animation.value,
+                child: _buildActiveDot(),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    // Static states
+    if (isCompleted) {
+      return _buildCompletedDot();
+    } else if (isActive) {
+      return _buildActiveDot();
+    } else {
+      return _buildInactiveDot();
+    }
   }
 
   /// Builds a completed step dot (with checkmark icon).
@@ -325,6 +363,7 @@ class _MovingDotStepperState extends State<MovingDotStepper>
       decoration: BoxDecoration(
         color: widget.theme.completedColor,
         shape: BoxShape.circle,
+        boxShadow: widget.theme.dotShadow,
       ),
       child: Center(
         child: widget.completedIcon ??
@@ -337,14 +376,21 @@ class _MovingDotStepperState extends State<MovingDotStepper>
     );
   }
 
-  /// Builds an active step dot (filled circle).
+  /// Builds an active step dot (filled or outlined circle).
   Widget _buildActiveDot() {
     return Container(
       width: widget.theme.dotSize,
       height: widget.theme.dotSize,
       decoration: BoxDecoration(
-        color: widget.theme.activeColor,
+        color: widget.theme.activeFillColor ?? widget.theme.activeColor,
         shape: BoxShape.circle,
+        border: widget.theme.activeBorderColor != null
+            ? Border.all(
+                color: widget.theme.activeBorderColor!,
+                width: widget.theme.activeBorderWidth,
+              )
+            : null,
+        boxShadow: widget.theme.dotShadow,
       ),
     );
   }
@@ -355,12 +401,13 @@ class _MovingDotStepperState extends State<MovingDotStepper>
       width: widget.theme.dotSize,
       height: widget.theme.dotSize,
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: widget.theme.inactiveFillColor,
         shape: BoxShape.circle,
         border: Border.all(
           color: widget.theme.inactiveColor,
-          width: 2.0,
+          width: widget.theme.inactiveBorderWidth,
         ),
+        boxShadow: widget.theme.dotShadow,
       ),
     );
   }
