@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'data/example_data.dart';
 import 'widgets/example_card.dart';
 import 'widgets/moving_dot_example_card.dart';

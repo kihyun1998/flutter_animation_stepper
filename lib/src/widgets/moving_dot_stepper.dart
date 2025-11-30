@@ -74,6 +74,16 @@ class MovingDotStepper extends StatefulWidget {
   /// If null, defaults to [Icons.check].
   final Widget? completedIcon;
 
+  /// The icon to display for the active (current) step.
+  ///
+  /// If null, shows a filled circle without an icon.
+  final Widget? activeIcon;
+
+  /// The icon to display for inactive (upcoming) steps.
+  ///
+  /// If null, shows an empty circle without an icon.
+  final Widget? inactiveIcon;
+
   /// Called when a step is tapped by the user.
   ///
   /// The callback receives the index of the tapped step.
@@ -101,6 +111,8 @@ class MovingDotStepper extends StatefulWidget {
     required this.currentStep,
     this.stepLabels,
     this.completedIcon,
+    this.activeIcon,
+    this.inactiveIcon,
     this.onStepTapped,
     this.enableStepTapping = true,
     this.theme = const MovingDotStepperTheme(),
@@ -395,6 +407,8 @@ class _MovingDotStepperState extends State<MovingDotStepper>
             : null,
         boxShadow: widget.theme.dotShadow,
       ),
+      child:
+          widget.activeIcon != null ? Center(child: widget.activeIcon!) : null,
     );
   }
 
@@ -412,6 +426,9 @@ class _MovingDotStepperState extends State<MovingDotStepper>
         ),
         boxShadow: widget.theme.dotShadow,
       ),
+      child: widget.inactiveIcon != null
+          ? Center(child: widget.inactiveIcon!)
+          : null,
     );
   }
 

@@ -51,6 +51,8 @@ class MovingDotExampleCard extends ConsumerWidget {
               currentStep: stepperState.currentStep,
               stepLabels: example.stepLabels,
               completedIcon: example.completedIcon,
+              activeIcon: example.activeIcon,
+              inactiveIcon: example.inactiveIcon,
               theme: example.theme ?? const MovingDotStepperTheme(),
               onStepTapped: controller.goToStep,
             ),

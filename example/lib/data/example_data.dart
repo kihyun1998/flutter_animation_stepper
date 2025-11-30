@@ -20,6 +20,8 @@ class MovingDotExampleData {
   final int stepCount;
   final List<String>? stepLabels;
   final Widget? completedIcon;
+  final Widget? activeIcon;
+  final Widget? inactiveIcon;
   final MovingDotStepperTheme? theme;
   final String? description;
 
@@ -28,6 +30,8 @@ class MovingDotExampleData {
     required this.stepCount,
     this.stepLabels,
     this.completedIcon,
+    this.activeIcon,
+    this.inactiveIcon,
     this.theme,
     this.description,
   });
@@ -470,6 +474,87 @@ final allMovingDotExamples = [
       completedColor: Color(0xFF10B981),
       inactiveFillColor: Colors.white,
       inactiveColor: Color(0xFFD1D5DB),
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Custom Icons (All States)',
+    description: 'Different icons for inactive, active, and completed states',
+    stepCount: 4,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    inactiveIcon: Icon(
+      Icons.radio_button_unchecked,
+      color: Color(0xFF9CA3AF),
+      size: 16,
+    ),
+    activeIcon: Icon(Icons.play_circle_filled, color: Colors.white, size: 16),
+    completedIcon: Icon(Icons.check_circle, color: Colors.white, size: 16),
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFF6366F1),
+      completedColor: Color(0xFF10B981),
+      inactiveColor: Color(0xFFD1D5DB),
+      inactiveFillColor: Colors.white,
+      dotSize: 28.0,
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Emoji Icons',
+    description: 'Using emoji-style icons for all states',
+    stepCount: 4,
+    stepLabels: ['Queue', 'Active', 'Review', 'Done'],
+    inactiveIcon: Icon(
+      Icons.hourglass_empty,
+      color: Color(0xFF9CA3AF),
+      size: 14,
+    ),
+    activeIcon: Icon(Icons.hourglass_bottom, color: Colors.white, size: 14),
+    completedIcon: Icon(Icons.verified, color: Colors.white, size: 14),
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFFEC4899),
+      completedColor: Color(0xFF8B5CF6),
+      inactiveColor: Color(0xFFBDBDBD),
+      inactiveFillColor: Color(0xFFF3F4F6),
+      dotSize: 30.0,
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Number Icons',
+    description: 'Numbers in inactive/active, check in completed',
+    stepCount: 5,
+    stepLabels: ['One', 'Two', 'Three', 'Four', 'Five'],
+    inactiveIcon: Icon(
+      Icons.circle_outlined,
+      color: Color(0xFF9CA3AF),
+      size: 12,
+    ),
+    activeIcon: Icon(Icons.circle, color: Colors.white, size: 12),
+    completedIcon: Icon(Icons.check, color: Colors.white, size: 14),
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFF3B82F6),
+      completedColor: Color(0xFF22C55E),
+      inactiveColor: Color(0xFFD1D5DB),
+      dotSize: 26.0,
+      stepSpacing: 70.0,
+    ),
+  ),
+  const MovingDotExampleData(
+    title: 'Arrow Progress',
+    description: 'Arrow icons showing progress direction',
+    stepCount: 4,
+    stepLabels: ['Begin', 'Work', 'Test', 'Ship'],
+    inactiveIcon: Icon(
+      Icons.arrow_forward_ios,
+      color: Color(0xFFBDBDBD),
+      size: 12,
+    ),
+    activeIcon: Icon(Icons.double_arrow, color: Colors.white, size: 14),
+    completedIcon: Icon(Icons.done_all, color: Colors.white, size: 14),
+    theme: MovingDotStepperTheme(
+      activeColor: Color(0xFFF59E0B),
+      completedColor: Color(0xFF10B981),
+      inactiveColor: Color(0xFFE5E7EB),
+      inactiveFillColor: Colors.white,
+      dotSize: 32.0,
+      stepSpacing: 90.0,
     ),
   ),
 ];

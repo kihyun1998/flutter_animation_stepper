@@ -4,8 +4,12 @@ A Flutter package for creating beautiful horizontal steppers with smooth animati
 
 ## Features
 
+- **Two Stepper Widgets**:
+  - `AnimationStepper`: Traditional stepper with icons, titles, and subtitles
+  - `MovingDotStepper`: Minimal dot-based stepper with smooth transitions
 - **Smooth Animations**: Elegant transitions between step states with customizable animation curves
 - **Fully Customizable**: Control colors, sizes, fonts, and animation durations through theme
+- **Custom Icons**: Support for custom icons in all states (inactive, active, completed) including SVG
 - **Loading Indicator**: Built-in support for showing loading state on specific steps
 - **Step Navigation**: Tap on steps to navigate with `onStepTapped` callback
 - **Flexible Widgets**: Support for any widget type in steps (Icon, Image, SVG, etc.)
@@ -18,7 +22,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_animation_stepper: ^1.0.0
+  flutter_animation_stepper: ^1.0.2
 ```
 
 Then run:
@@ -86,6 +90,59 @@ AnimationStepper(
   steps: steps,
   currentStep: currentStep,
   loadingStep: 1, // Show loading on step 1
+  onStepTapped: (index) {
+    setState(() => currentStep = index);
+  },
+)
+```
+
+### MovingDotStepper - Basic Usage
+
+```dart
+import 'package:flutter_animation_stepper/flutter_animation_stepper.dart';
+
+MovingDotStepper(
+  stepCount: 4,
+  currentStep: 1,
+  stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+  onStepTapped: (index) {
+    setState(() => currentStep = index);
+  },
+)
+```
+
+### MovingDotStepper - With Custom Icons
+
+```dart
+MovingDotStepper(
+  stepCount: 4,
+  currentStep: 1,
+  stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+  inactiveIcon: Icon(Icons.radio_button_unchecked, color: Colors.grey, size: 16),
+  activeIcon: Icon(Icons.play_circle_filled, color: Colors.white, size: 16),
+  completedIcon: Icon(Icons.check_circle, color: Colors.white, size: 16),
+  theme: MovingDotStepperTheme(
+    activeColor: Colors.blue,
+    completedColor: Colors.green,
+    dotSize: 28.0,
+  ),
+  onStepTapped: (index) {
+    setState(() => currentStep = index);
+  },
+)
+```
+
+### MovingDotStepper - With SVG Icons
+
+```dart
+import 'package:flutter_svg/flutter_svg.dart';
+
+MovingDotStepper(
+  stepCount: 3,
+  currentStep: 0,
+  inactiveIcon: SvgPicture.asset('assets/icons/inactive.svg', width: 16, height: 16),
+  activeIcon: SvgPicture.asset('assets/icons/active.svg', width: 16, height: 16),
+  completedIcon: SvgPicture.asset('assets/icons/completed.svg', width: 16, height: 16),
   onStepTapped: (index) {
     setState(() => currentStep = index);
   },
