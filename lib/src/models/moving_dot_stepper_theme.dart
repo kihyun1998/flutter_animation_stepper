@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 /// Defines the visual properties for a [MovingDotStepper] widget.
@@ -100,12 +101,13 @@ class MovingDotStepperTheme {
   /// Defaults to `2.0`.
   final double lineThickness;
 
-  /// The horizontal distance between step dot centers.
+  /// Horizontal spacing between dots and lines.
   ///
-  /// This value determines the spacing of the stepper layout.
+  /// Creates visual gap between each dot edge and line edge.
+  /// Set to 0.0 for lines directly connected to dots.
   ///
-  /// Defaults to `80.0`.
-  final double stepSpacing;
+  /// Defaults to `0.0`.
+  final double lineInset;
 
   /// The size of the completed icon in logical pixels.
   ///
@@ -120,14 +122,6 @@ class MovingDotStepperTheme {
   ///
   /// Defaults to `8.0`.
   final double labelSpacing;
-
-  /// Horizontal padding between dots and lines.
-  ///
-  /// Creates visual spacing between each dot and its adjacent line segments.
-  /// Set to 0.0 for lines directly connected to dots.
-  ///
-  /// Defaults to `8.0`.
-  final double linePadding;
 
   /// The border width of inactive step dots.
   ///
@@ -204,10 +198,9 @@ class MovingDotStepperTheme {
     this.activeLineColor = const Color(0xFF2196F3),
     this.dotSize = 24.0,
     this.lineThickness = 2.0,
-    this.stepSpacing = 80.0,
+    this.lineInset = 0.0,
     this.iconSize = 16.0,
     this.labelSpacing = 8.0,
-    this.linePadding = 8.0,
     this.inactiveBorderWidth = 2.0,
     this.dotShadow,
     this.animationDuration = const Duration(milliseconds: 400),
@@ -230,10 +223,9 @@ class MovingDotStepperTheme {
     Color? activeLineColor,
     double? dotSize,
     double? lineThickness,
-    double? stepSpacing,
+    double? lineInset,
     double? iconSize,
     double? labelSpacing,
-    double? linePadding,
     double? inactiveBorderWidth,
     List<BoxShadow>? dotShadow,
     Duration? animationDuration,
@@ -254,10 +246,9 @@ class MovingDotStepperTheme {
       activeLineColor: activeLineColor ?? this.activeLineColor,
       dotSize: dotSize ?? this.dotSize,
       lineThickness: lineThickness ?? this.lineThickness,
-      stepSpacing: stepSpacing ?? this.stepSpacing,
+      lineInset: lineInset ?? this.lineInset,
       iconSize: iconSize ?? this.iconSize,
       labelSpacing: labelSpacing ?? this.labelSpacing,
-      linePadding: linePadding ?? this.linePadding,
       inactiveBorderWidth: inactiveBorderWidth ?? this.inactiveBorderWidth,
       dotShadow: dotShadow ?? this.dotShadow,
       animationDuration: animationDuration ?? this.animationDuration,

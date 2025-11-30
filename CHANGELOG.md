@@ -1,3 +1,19 @@
+## 2.0.0
+
+### Breaking Changes
+- **MovingDotStepper**: Removed `stepSpacing` and `linePadding` theme properties
+- **MovingDotStepper**: Steps now automatically distribute evenly across available width
+- **MovingDotStepper**: Width is now controlled by parent widget (Container, Expanded, etc.)
+
+### New Features
+- **MovingDotStepper**: Added `lineInset` theme property to control spacing between dots and lines
+- **MovingDotStepper**: Steps now scale responsively based on container width
+
+### Migration Guide
+- Remove `stepSpacing` and `linePadding` from `MovingDotStepperTheme`
+- Wrap `MovingDotStepper` in a sized container or use `Expanded` to control width
+- Use `lineInset` property (default: 0.0) for spacing between dots and lines
+
 ## 1.0.2
 
 - Added `activeIcon` and `inactiveIcon` parameters to MovingDotStepper

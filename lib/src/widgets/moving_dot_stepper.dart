@@ -175,20 +175,28 @@ class _MovingDotStepperState extends State<MovingDotStepper>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: IntrinsicHeight(
-        child: _buildStepper(),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return IntrinsicHeight(
+          child: _buildStepper(constraints.maxWidth),
+        );
+      },
     );
   }
 
-  /// Builds the stepper with independent line segments (○━━○━━○).
-  Widget _buildStepper() {
+  /// Builds the stepper with evenly distributed steps (○━━━━○━━━━○).
+  Widget _buildStepper(double availableWidth) {
     final List<Widget> children = [];
 
+    // Calculate dynamic line width
+    final totalDotWidth = widget.theme.dotSize * widget.stepCount;
+    final totalInsetWidth = widget.theme.lineInset * 2 * (widget.stepCount - 1);
+    final totalLineWidth = availableWidth - totalDotWidth - totalInsetWidth;
+    final lineWidth =
+        widget.stepCount > 1 ? totalLineWidth / (widget.stepCount - 1) : 0.0;
+
     for (int i = 0; i < widget.stepCount; i++) {
-      // Add step with fixed width wrapper
+      // Add step
       children.add(
         SizedBox(
           width: widget.theme.dotSize,
@@ -198,12 +206,12 @@ class _MovingDotStepperState extends State<MovingDotStepper>
 
       // Add line (except after last step)
       if (i < widget.stepCount - 1) {
-        children.add(SizedBox(width: widget.theme.linePadding));
+        if (widget.theme.lineInset > 0) {
+          children.add(SizedBox(width: widget.theme.lineInset));
+        }
         children.add(
           SizedBox(
-            width: widget.theme.stepSpacing -
-                widget.theme.dotSize -
-                widget.theme.linePadding * 2,
+            width: lineWidth.clamp(0, double.infinity),
             child: Padding(
               padding: EdgeInsets.only(
                 top: widget.theme.dotSize / 2 - widget.theme.lineThickness / 2,
@@ -212,11 +220,14 @@ class _MovingDotStepperState extends State<MovingDotStepper>
             ),
           ),
         );
-        children.add(SizedBox(width: widget.theme.linePadding));
+        if (widget.theme.lineInset > 0) {
+          children.add(SizedBox(width: widget.theme.lineInset));
+        }
       }
     }
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     );

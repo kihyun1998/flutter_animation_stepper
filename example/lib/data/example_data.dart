@@ -248,13 +248,13 @@ final allMovingDotExamples = [
   ),
   const MovingDotExampleData(
     title: 'Large Dots',
-    description: 'Bigger dots with custom spacing',
+    description: 'Bigger dots with inset spacing',
     stepCount: 5,
     stepLabels: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
     theme: MovingDotStepperTheme(
       dotSize: 32.0,
       iconSize: 20.0,
-      stepSpacing: 100.0,
+      lineInset: 4.0,
       activeColor: Color(0xFFEC4899),
       completedColor: Color(0xFF8B5CF6),
     ),
@@ -278,7 +278,6 @@ final allMovingDotExamples = [
       activeColor: Color(0xFF14B8A6),
       completedColor: Color(0xFF0D9488),
       dotSize: 20.0,
-      stepSpacing: 60.0,
     ),
   ),
   const MovingDotExampleData(
@@ -323,7 +322,7 @@ final allMovingDotExamples = [
     stepCount: 4,
     stepLabels: ['Start', 'Process', 'Review', 'Complete'],
     theme: MovingDotStepperTheme(
-      linePadding: 0.0,
+      lineInset: 0.0,
       activeColor: Color(0xFF6366F1),
       completedColor: Color(0xFF10B981),
       activeLineColor: Color(0xFF6366F1),
@@ -331,11 +330,11 @@ final allMovingDotExamples = [
   ),
   const MovingDotExampleData(
     title: 'Default Gap',
-    description: 'Independent line segments between dots',
+    description: 'Small spacing between dots and lines',
     stepCount: 4,
     stepLabels: ['Start', 'Process', 'Review', 'Complete'],
     theme: MovingDotStepperTheme(
-      linePadding: 8.0,
+      lineInset: 4.0,
       activeColor: Color(0xFF6366F1),
       completedColor: Color(0xFF10B981),
       activeLineColor: Color(0xFF6366F1),
@@ -343,12 +342,11 @@ final allMovingDotExamples = [
   ),
   const MovingDotExampleData(
     title: 'Small Gap',
-    description: 'Minimal padding between dots and lines',
+    description: 'Minimal spacing between dots and lines',
     stepCount: 5,
     stepLabels: ['A', 'B', 'C', 'D', 'E'],
     theme: MovingDotStepperTheme(
-      linePadding: 4.0,
-      stepSpacing: 60.0,
+      lineInset: 2.0,
       activeColor: Color(0xFFEC4899),
       completedColor: Color(0xFF8B5CF6),
       lineThickness: 3.0,
@@ -360,8 +358,7 @@ final allMovingDotExamples = [
     stepCount: 3,
     stepLabels: ['Begin', 'Middle', 'End'],
     theme: MovingDotStepperTheme(
-      linePadding: 16.0,
-      stepSpacing: 120.0,
+      lineInset: 8.0,
       dotSize: 28.0,
       iconSize: 18.0,
       activeColor: Color(0xFFF59E0B),
@@ -428,8 +425,7 @@ final allMovingDotExamples = [
       completedColor: const Color(0xFF22C55E),
       dotSize: 32.0,
       iconSize: 20.0,
-      stepSpacing: 90.0,
-      linePadding: 12.0,
+      lineInset: 6.0,
     ),
   ),
   const MovingDotExampleData(
@@ -533,7 +529,6 @@ final allMovingDotExamples = [
       completedColor: Color(0xFF22C55E),
       inactiveColor: Color(0xFFD1D5DB),
       dotSize: 26.0,
-      stepSpacing: 70.0,
     ),
   ),
   const MovingDotExampleData(
@@ -554,7 +549,6 @@ final allMovingDotExamples = [
       inactiveColor: Color(0xFFE5E7EB),
       inactiveFillColor: Colors.white,
       dotSize: 32.0,
-      stepSpacing: 90.0,
     ),
   ),
 ];

@@ -101,34 +101,43 @@ AnimationStepper(
 ```dart
 import 'package:flutter_animation_stepper/flutter_animation_stepper.dart';
 
-MovingDotStepper(
-  stepCount: 4,
-  currentStep: 1,
-  stepLabels: ['Start', 'Process', 'Review', 'Complete'],
-  onStepTapped: (index) {
-    setState(() => currentStep = index);
-  },
+// Steps are evenly distributed across the available width
+// Control width using a parent Container or Expanded widget
+Container(
+  width: 400, // Or use Expanded for flexible width
+  child: MovingDotStepper(
+    stepCount: 4,
+    currentStep: 1,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    onStepTapped: (index) {
+      setState(() => currentStep = index);
+    },
+  ),
 )
 ```
 
 ### MovingDotStepper - With Custom Icons
 
 ```dart
-MovingDotStepper(
-  stepCount: 4,
-  currentStep: 1,
-  stepLabels: ['Start', 'Process', 'Review', 'Complete'],
-  inactiveIcon: Icon(Icons.radio_button_unchecked, color: Colors.grey, size: 16),
-  activeIcon: Icon(Icons.play_circle_filled, color: Colors.white, size: 16),
-  completedIcon: Icon(Icons.check_circle, color: Colors.white, size: 16),
-  theme: MovingDotStepperTheme(
-    activeColor: Colors.blue,
-    completedColor: Colors.green,
-    dotSize: 28.0,
+Container(
+  width: double.infinity, // Fill available width
+  child: MovingDotStepper(
+    stepCount: 4,
+    currentStep: 1,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    inactiveIcon: Icon(Icons.radio_button_unchecked, color: Colors.grey, size: 16),
+    activeIcon: Icon(Icons.play_circle_filled, color: Colors.white, size: 16),
+    completedIcon: Icon(Icons.check_circle, color: Colors.white, size: 16),
+    theme: MovingDotStepperTheme(
+      activeColor: Colors.blue,
+      completedColor: Colors.green,
+      dotSize: 28.0,
+      lineInset: 4.0, // Optional: spacing between dots and lines
+    ),
+    onStepTapped: (index) {
+      setState(() => currentStep = index);
+    },
   ),
-  onStepTapped: (index) {
-    setState(() => currentStep = index);
-  },
 )
 ```
 
@@ -137,15 +146,17 @@ MovingDotStepper(
 ```dart
 import 'package:flutter_svg/flutter_svg.dart';
 
-MovingDotStepper(
-  stepCount: 3,
-  currentStep: 0,
-  inactiveIcon: SvgPicture.asset('assets/icons/inactive.svg', width: 16, height: 16),
-  activeIcon: SvgPicture.asset('assets/icons/active.svg', width: 16, height: 16),
-  completedIcon: SvgPicture.asset('assets/icons/completed.svg', width: 16, height: 16),
-  onStepTapped: (index) {
-    setState(() => currentStep = index);
-  },
+Expanded(
+  child: MovingDotStepper(
+    stepCount: 3,
+    currentStep: 0,
+    inactiveIcon: SvgPicture.asset('assets/icons/inactive.svg', width: 16, height: 16),
+    activeIcon: SvgPicture.asset('assets/icons/active.svg', width: 16, height: 16),
+    completedIcon: SvgPicture.asset('assets/icons/completed.svg', width: 16, height: 16),
+    onStepTapped: (index) {
+      setState(() => currentStep = index);
+    },
+  ),
 )
 ```
 
