@@ -22,7 +22,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_animation_stepper: ^1.0.2
+  flutter_animation_stepper: ^2.0.0
 ```
 
 Then run:
