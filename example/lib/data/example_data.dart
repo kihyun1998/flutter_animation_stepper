@@ -19,6 +19,9 @@ class MovingDotExampleData {
   final String title;
   final int stepCount;
   final List<String>? stepLabels;
+  final Widget? completedDot;
+  final Widget? activeDot;
+  final Widget? inactiveDot;
   final Widget? completedIcon;
   final Widget? activeIcon;
   final Widget? inactiveIcon;
@@ -29,6 +32,9 @@ class MovingDotExampleData {
     required this.title,
     required this.stepCount,
     this.stepLabels,
+    this.completedDot,
+    this.activeDot,
+    this.inactiveDot,
     this.completedIcon,
     this.activeIcon,
     this.inactiveIcon,
@@ -549,6 +555,168 @@ final allMovingDotExamples = [
       inactiveColor: Color(0xFFE5E7EB),
       inactiveFillColor: Colors.white,
       dotSize: 32.0,
+    ),
+  ),
+  MovingDotExampleData(
+    title: 'Custom Dot Widgets - Square',
+    description: 'Replace entire dot structure with custom square widgets',
+    stepCount: 4,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    completedDot: Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: const Color(0xFF10B981),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: const Icon(Icons.check, color: Colors.white, size: 16),
+    ),
+    activeDot: Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: const Color(0xFF6366F1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: const Icon(Icons.edit, color: Colors.white, size: 16),
+    ),
+    inactiveDot: Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: const Color(0xFFD1D5DB), width: 2),
+      ),
+    ),
+  ),
+  MovingDotExampleData(
+    title: 'Custom Dot Widgets - Diamond',
+    description: 'Diamond-shaped custom dots with rotation',
+    stepCount: 4,
+    stepLabels: ['1', '2', '3', '4'],
+    completedDot: Transform.rotate(
+      angle: 0.785398, // 45 degrees in radians
+      child: Container(
+        width: 24,
+        height: 24,
+        decoration: const BoxDecoration(
+          color: Color(0xFFEC4899),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        ),
+      ),
+    ),
+    activeDot: Transform.rotate(
+      angle: 0.785398,
+      child: Container(
+        width: 24,
+        height: 24,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF59E0B),
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+      ),
+    ),
+    inactiveDot: Transform.rotate(
+      angle: 0.785398,
+      child: Container(
+        width: 24,
+        height: 24,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          border: Border.all(color: const Color(0xFFD1D5DB), width: 2),
+        ),
+      ),
+    ),
+  ),
+  MovingDotExampleData(
+    title: 'Custom Dot Widgets - Text Numbers',
+    description: 'Text-based step numbers instead of dots',
+    stepCount: 5,
+    stepLabels: ['Start', 'Design', 'Build', 'Test', 'Launch'],
+    completedDot: Container(
+      width: 32,
+      height: 32,
+      decoration: const BoxDecoration(
+        color: Color(0xFF22C55E),
+        shape: BoxShape.circle,
+      ),
+      child: const Center(
+        child: Icon(Icons.check, color: Colors.white, size: 18),
+      ),
+    ),
+    activeDot: Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: const Color(0xFF3B82F6),
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF3B82F6).withValues(alpha: 0.4),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: const Center(
+        child: Icon(Icons.play_arrow, color: Colors.white, size: 18),
+      ),
+    ),
+    inactiveDot: Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F4F6),
+        shape: BoxShape.circle,
+        border: Border.all(color: const Color(0xFFD1D5DB), width: 2),
+      ),
+      child: const Center(
+        child: Icon(Icons.more_horiz, color: Color(0xFF9CA3AF), size: 16),
+      ),
+    ),
+  ),
+  MovingDotExampleData(
+    title: 'Custom Dot Widgets - Gradient',
+    description: 'Gradient background for custom dots',
+    stepCount: 4,
+    stepLabels: ['Begin', 'Progress', 'Review', 'Done'],
+    completedDot: Container(
+      width: 30,
+      height: 30,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF10B981), Color(0xFF059669)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        shape: BoxShape.circle,
+      ),
+      child: const Icon(Icons.check_circle, color: Colors.white, size: 16),
+    ),
+    activeDot: Container(
+      width: 30,
+      height: 30,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF8B5CF6), Color(0xFF6366F1)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        shape: BoxShape.circle,
+      ),
+      child: const Icon(Icons.play_circle, color: Colors.white, size: 16),
+    ),
+    inactiveDot: Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F4F6),
+        shape: BoxShape.circle,
+        border: Border.all(color: const Color(0xFFD1D5DB), width: 2),
+      ),
     ),
   ),
 ];

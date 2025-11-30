@@ -69,19 +69,43 @@ class MovingDotStepper extends StatefulWidget {
   /// Labels are displayed below each step dot.
   final List<String>? stepLabels;
 
+  /// Custom widget to completely replace the completed step dot.
+  ///
+  /// When provided, this widget replaces the entire dot structure (not just the icon).
+  /// If null, uses the default circular dot with [completedIcon] inside.
+  ///
+  /// Note: You are responsible for sizing this widget appropriately.
+  final Widget? completedDot;
+
+  /// Custom widget to completely replace the active step dot.
+  ///
+  /// When provided, this widget replaces the entire dot structure (not just the icon).
+  /// If null, uses the default circular dot with [activeIcon] inside.
+  ///
+  /// Note: You are responsible for sizing this widget appropriately.
+  final Widget? activeDot;
+
+  /// Custom widget to completely replace the inactive step dot.
+  ///
+  /// When provided, this widget replaces the entire dot structure (not just the icon).
+  /// If null, uses the default circular dot with [inactiveIcon] inside.
+  ///
+  /// Note: You are responsible for sizing this widget appropriately.
+  final Widget? inactiveDot;
+
   /// The icon to display for completed steps.
   ///
-  /// If null, defaults to [Icons.check].
+  /// Only used if [completedDot] is null. If both are null, defaults to [Icons.check].
   final Widget? completedIcon;
 
   /// The icon to display for the active (current) step.
   ///
-  /// If null, shows a filled circle without an icon.
+  /// Only used if [activeDot] is null. If both are null, shows a filled circle without an icon.
   final Widget? activeIcon;
 
   /// The icon to display for inactive (upcoming) steps.
   ///
-  /// If null, shows an empty circle without an icon.
+  /// Only used if [inactiveDot] is null. If both are null, shows an empty circle without an icon.
   final Widget? inactiveIcon;
 
   /// Called when a step is tapped by the user.
@@ -110,6 +134,9 @@ class MovingDotStepper extends StatefulWidget {
     required this.stepCount,
     required this.currentStep,
     this.stepLabels,
+    this.completedDot,
+    this.activeDot,
+    this.inactiveDot,
     this.completedIcon,
     this.activeIcon,
     this.inactiveIcon,
@@ -383,6 +410,12 @@ class _MovingDotStepperState extends State<MovingDotStepper>
 
   /// Builds a completed step dot (with checkmark icon).
   Widget _buildCompletedDot() {
+    // Use custom widget if provided
+    if (widget.completedDot != null) {
+      return widget.completedDot!;
+    }
+
+    // Otherwise use default circular dot with icon
     return Container(
       width: widget.theme.dotSize,
       height: widget.theme.dotSize,
@@ -404,6 +437,12 @@ class _MovingDotStepperState extends State<MovingDotStepper>
 
   /// Builds an active step dot (filled or outlined circle).
   Widget _buildActiveDot() {
+    // Use custom widget if provided
+    if (widget.activeDot != null) {
+      return widget.activeDot!;
+    }
+
+    // Otherwise use default circular dot with icon
     return Container(
       width: widget.theme.dotSize,
       height: widget.theme.dotSize,
@@ -425,6 +464,12 @@ class _MovingDotStepperState extends State<MovingDotStepper>
 
   /// Builds an inactive step dot (empty circle with border).
   Widget _buildInactiveDot() {
+    // Use custom widget if provided
+    if (widget.inactiveDot != null) {
+      return widget.inactiveDot!;
+    }
+
+    // Otherwise use default circular dot with icon
     return Container(
       width: widget.theme.dotSize,
       height: widget.theme.dotSize,

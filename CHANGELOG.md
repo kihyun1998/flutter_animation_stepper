@@ -1,3 +1,13 @@
+## 2.0.1
+
+### New Features
+- **MovingDotStepper**: Added `completedDot`, `activeDot`, and `inactiveDot` parameters to completely replace dot widgets with custom widgets
+- Added 4 new examples demonstrating custom dot widgets (square, diamond, gradient, text-based)
+
+### Notes
+- Use `completedDot`, `activeDot`, `inactiveDot` for fully custom dot widgets (replaces entire dot structure)
+- Use `completedIcon`, `activeIcon`, `inactiveIcon` for custom icons inside default circular dots
+
 ## 2.0.0
 
 ### Breaking Changes

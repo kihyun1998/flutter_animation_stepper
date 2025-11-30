@@ -22,7 +22,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_animation_stepper: ^2.0.0
+  flutter_animation_stepper: ^2.0.1
 ```
 
 Then run:
@@ -153,6 +153,52 @@ Expanded(
     inactiveIcon: SvgPicture.asset('assets/icons/inactive.svg', width: 16, height: 16),
     activeIcon: SvgPicture.asset('assets/icons/active.svg', width: 16, height: 16),
     completedIcon: SvgPicture.asset('assets/icons/completed.svg', width: 16, height: 16),
+    onStepTapped: (index) {
+      setState(() => currentStep = index);
+    },
+  ),
+)
+```
+
+### MovingDotStepper - With Custom Dot Widgets
+
+Replace the entire dot structure (not just the icon) with custom widgets:
+
+```dart
+Container(
+  width: 400,
+  child: MovingDotStepper(
+    stepCount: 4,
+    currentStep: 1,
+    stepLabels: ['Start', 'Process', 'Review', 'Complete'],
+    // Custom square dots instead of circles
+    completedDot: Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Icon(Icons.check, color: Colors.white, size: 16),
+    ),
+    activeDot: Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Icon(Icons.edit, color: Colors.white, size: 16),
+    ),
+    inactiveDot: Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Colors.grey, width: 2),
+      ),
+    ),
     onStepTapped: (index) {
       setState(() => currentStep = index);
     },
