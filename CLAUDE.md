@@ -1,0 +1,21 @@
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked in this repo's GitHub Issues (`kihyun1998/flutter_animation_stepper`). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default triage labels, each named after its role (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## Comments
+
+A comment says what the code is. Why it is this way, what it deliberately leaves out, the trap and the measured value go to the territory note under `docs/map/`. Where none seems to hold it, search the folder and the code symbol first; only then start a new note, named for what the system does there, not for the file. History goes to the commit message. Comments written before this rule still carry the rest: never delete one whose content the map does not yet hold — move it there first.
+
+## Map
+
+The territory map is [`docs/map/README.md`](docs/map/README.md). Before designing a change, read the territory it touches and follow its blast radius. After the change lands, update the notes it made false. When a fix reveals a fact, ask whether it holds at every site that shares the same assumption; if yes, the fix lands with an invariant note.
